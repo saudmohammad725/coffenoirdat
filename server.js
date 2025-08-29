@@ -25,21 +25,31 @@ app.use(helmet({
             defaultSrc: ["'self'"],
             styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://cdnjs.cloudflare.com"],
             fontSrc: ["'self'", "https://fonts.gstatic.com", "https://cdnjs.cloudflare.com"],
-            scriptSrc: ["'self'", "'unsafe-inline'", "https://www.gstatic.com", "https://code.jquery.com", "https://stackpath.bootstrapcdn.com", "https://apis.google.com", "https://accounts.google.com"],
+            scriptSrc: ["'self'", "'unsafe-inline'", "https://www.gstatic.com", "https://code.jquery.com", "https://stackpath.bootstrapcdn.com", "https://apis.google.com", "https://accounts.google.com", "https://www.googletagmanager.com"],
+            scriptSrcAttr: ["'unsafe-inline'"],
             imgSrc: ["'self'", "data:", "https:"],
-            connectSrc: ["'self'", "https://coffeenoir-1fe6b.firebaseapp.com", "https://identitytoolkit.googleapis.com", "https://www.googleapis.com", "https://securetoken.googleapis.com"],
+            connectSrc: ["'self'", "https://coffeenoir-1fe6b.firebaseapp.com", "https://identitytoolkit.googleapis.com", "https://www.googleapis.com", "https://securetoken.googleapis.com", "https://firebase.googleapis.com", "https://firebaseinstallations.googleapis.com"],
             frameSrc: ["'self'", "https://accounts.google.com", "https://coffeenoir-1fe6b.firebaseapp.com"]
         }
     }
 }));
 
-// Rate limiting
+// Rate limiting - more lenient for static files
 const limiter = rateLimit({
     windowMs: 5 * 60 * 1000, // 5 minutes
-    max: 100, // limit each IP to 100 requests per windowMs
+    max: 200, // increased limit for static files
     message: {
         error: 'عذراً، تم تجاوز الحد المسموح من الطلبات. حاول مرة أخرى لاحقاً.',
         retryAfter: '5 دقائق'
+    },
+    skip: (req) => {
+        // Skip rate limiting for static files
+        return req.url.startsWith('/css/') || 
+               req.url.startsWith('/js/') || 
+               req.url.startsWith('/img/') || 
+               req.url.startsWith('/lib/') || 
+               req.url.startsWith('/mail/') ||
+               req.url.startsWith('/uploads/');
     }
 });
 
@@ -65,9 +75,21 @@ app.use('/uploads', express.static('uploads'));
 
 // Serve static frontend files (CSS, JS, Images)
 app.use('/css', express.static('css'));
-app.use('/js', express.static('js'));
+app.use('/js', express.static('js', {
+    setHeaders: (res, path) => {
+        if (path.endsWith('.js')) {
+            res.set('Content-Type', 'text/javascript');
+        }
+    }
+}));
 app.use('/img', express.static('img'));
-app.use('/lib', express.static('lib'));
+app.use('/lib', express.static('lib', {
+    setHeaders: (res, path) => {
+        if (path.endsWith('.js')) {
+            res.set('Content-Type', 'text/javascript');
+        }
+    }
+}));
 app.use('/mail', express.static('mail'));
 
 // Health check endpoint
