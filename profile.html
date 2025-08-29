@@ -823,7 +823,22 @@
         // Sign in with Google
         async function signInWithGoogle(event) {
             try {
-                console.log('Attempting Google sign in...');
+                console.log('🚀 Attempting Google sign in...');
+                console.log('🔍 Firebase auth object:', typeof auth);
+                console.log('🔍 Google provider object:', typeof googleProvider);
+                
+                // التحقق من تحميل Firebase
+                if (typeof firebase === 'undefined') {
+                    console.error('❌ Firebase not loaded');
+                    alert('خطأ: Firebase غير محمل. يرجى إعادة تحميل الصفحة.');
+                    return;
+                }
+                
+                if (typeof auth === 'undefined') {
+                    console.error('❌ Firebase Auth not loaded');
+                    alert('خطأ: نظام المصادقة غير محمل. يرجى إعادة تحميل الصفحة.');
+                    return;
+                }
                 
                 // إظهار loading على الزر
                 const loginButton = event?.target;
@@ -832,6 +847,7 @@
                     loginButton.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i>جاري تسجيل الدخول...';
                 }
                 
+                console.log('🔐 Starting Google popup...');
                 const result = await auth.signInWithPopup(googleProvider);
                 const user = result.user;
                 

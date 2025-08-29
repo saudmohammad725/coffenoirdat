@@ -25,20 +25,21 @@ app.use(helmet({
             defaultSrc: ["'self'"],
             styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://cdnjs.cloudflare.com"],
             fontSrc: ["'self'", "https://fonts.gstatic.com", "https://cdnjs.cloudflare.com"],
-            scriptSrc: ["'self'", "'unsafe-inline'", "https://www.gstatic.com", "https://code.jquery.com", "https://stackpath.bootstrapcdn.com"],
+            scriptSrc: ["'self'", "'unsafe-inline'", "https://www.gstatic.com", "https://code.jquery.com", "https://stackpath.bootstrapcdn.com", "https://apis.google.com", "https://accounts.google.com"],
             imgSrc: ["'self'", "data:", "https:"],
-            connectSrc: ["'self'", "https://coffeenoir-1fe6b.firebaseapp.com"]
+            connectSrc: ["'self'", "https://coffeenoir-1fe6b.firebaseapp.com", "https://identitytoolkit.googleapis.com", "https://www.googleapis.com", "https://securetoken.googleapis.com"],
+            frameSrc: ["'self'", "https://accounts.google.com", "https://coffeenoir-1fe6b.firebaseapp.com"]
         }
     }
 }));
 
 // Rate limiting
 const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
+    windowMs: 5 * 60 * 1000, // 5 minutes
     max: 100, // limit each IP to 100 requests per windowMs
     message: {
         error: 'عذراً، تم تجاوز الحد المسموح من الطلبات. حاول مرة أخرى لاحقاً.',
-        retryAfter: '15 دقيقة'
+        retryAfter: '5 دقائق'
     }
 });
 
