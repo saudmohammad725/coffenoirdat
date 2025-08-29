@@ -1,0 +1,1690 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="utf-8">
+    <title>Noir Café - الملف الشخصي</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="User Profile" name="keywords">
+    <meta content="User Profile" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/style.min.css" rel="stylesheet">
+    
+    <style>
+        body{font-family:'Tajawal','Roboto','Montserrat',sans-serif}
+        
+        .profile-card {
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(218,159,91,0.2);
+        }
+        
+        .profile-nav {
+            background: linear-gradient(135deg, #DA9F5B, #c8935a);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .profile-nav .nav-link {
+            color: #fff;
+            font-weight: 600;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+        }
+        
+        .profile-nav .nav-link:hover, .profile-nav .nav-link.active {
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+            transform: translateX(10px);
+        }
+        
+        .profile-nav .nav-link i {
+            margin-left: 10px;
+            width: 20px;
+        }
+        
+        .login-modal .modal-content {
+            border-radius: 20px;
+            border: none;
+            overflow: hidden;
+        }
+        
+        .login-header {
+            background: linear-gradient(135deg, #DA9F5B, #c8935a);
+            color: #fff;
+            text-align: center;
+            padding: 30px;
+            position: relative;
+        }
+        
+        .login-header .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            opacity: 0.8;
+        }
+        
+        .social-btn {
+            transition: all 0.3s ease;
+            font-weight: 600;
+            border-radius: 50px;
+            padding: 15px 25px;
+        }
+        
+        .social-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .profile-info-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .profile-info-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 4px solid #DA9F5B;
+        }
+        
+        .btn-primary {
+            background: #DA9F5B;
+            border-color: #DA9F5B;
+        }
+        
+        .btn-primary:hover {
+            background: #c8935a;
+            border-color: #c8935a;
+        }
+        
+
+    </style>
+</head>
+
+<body>
+    <!-- Navbar Start -->
+    <div class="container-fluid p-0 nav-bar">
+        <nav class="navbar navbar-expand-lg bg-none navbar-dark py-3">
+            <a href="index.html" class="navbar-brand px-lg-4 m-0">
+                <h2 class="m-0 text-uppercase text-white font-weight-bold" style="font-size: 2rem;">Noir Café</h2>
+            </a>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                <div class="navbar-nav ml-auto p-4">
+                    <a href="index.html" class="nav-item nav-link">الرئيسية</a>
+                    <a href="about.html" class="nav-item nav-link">من نحن</a>
+                    <a href="service.html" class="nav-item nav-link">الخدمات</a>
+                    <a href="menu.html" class="nav-item nav-link">القائمة</a>
+                    <a href="profile.html" class="nav-item nav-link active">الملف الشخصي</a>
+                    <a href="contact.html" class="nav-item nav-link">تواصل معنا</a>
+                    
+                    <!-- User Points Display in Navbar -->
+                    <div class="nav-item d-flex align-items-center mr-3" style="background: linear-gradient(135deg, rgba(218,159,91,0.2), rgba(51,33,29,0.1)); border-radius: 20px; padding: 6px 12px; border: 1px solid rgba(218,159,91,0.3); cursor: pointer;" onclick="window.location.href='points.html'" title="رصيد النقاط - اضغط للشراء">
+                        <i class="fa fa-coins mr-3" style="color: #DA9F5B;"></i>
+                        <span class="text-white font-weight-bold" id="navUserPointsDisplay">0</span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!-- Navbar End -->
+
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header mb-5 position-relative overlay-bottom">
+        <div class="d-flex flex-column align-items-center justify-content-center pt-0 pt-lg-5" style="min-height: 400px">
+            <h1 class="display-4 mb-3 mt-0 mt-lg-5 text-white text-uppercase">الملف الشخصي</h1>
+            <div class="d-inline-flex mb-lg-5">
+                <p class="m-0 text-white"><a class="text-white" href="index.html">الرئيسية</a></p>
+                <p class="m-0 text-white px-2">/</p>
+                <p class="m-0 text-white">الملف الشخصي</p>
+            </div>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+    <!-- Profile Content Start -->
+    <div class="container-fluid py-5">
+        <div class="container">
+            <!-- Login Required Alert -->
+            <div id="loginAlert" class="alert alert-warning text-center" style="border-radius: 15px; border: 2px solid #DA9F5B;">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h4 class="mb-2"><i class="fa fa-user-lock text-primary"></i> يرجى تسجيل الدخول</h4>
+                        <p class="mb-0">للوصول إلى الملف الشخصي، يرجى تسجيل الدخول باستخدام قوقل</p>
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-primary btn-lg font-weight-bold" data-toggle="modal" data-target="#loginModal">
+                            <i class="fa fa-sign-in-alt"></i> تسجيل الدخول
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Content -->
+            <div id="profileContent" style="display: none;">
+                <div class="row">
+                    <!-- Profile Navigation -->
+                    <div class="col-lg-3">
+                        <div class="profile-nav">
+                            <h4 class="text-white mb-4 text-center"><i class="fa fa-user"></i> حسابي</h4>
+                            <nav class="nav flex-column">
+                                <button class="nav-link active" data-tab="info">
+                                    <i class="fa fa-info-circle"></i> المعلومات
+                                </button>
+                                <button class="nav-link" data-tab="devices">
+                                    <i class="fa fa-desktop"></i> الأجهزة
+                                </button>
+                                <button class="nav-link" data-tab="orders">
+                                    <i class="fa fa-shopping-cart"></i> الطلبات
+                                </button>
+                                <button class="nav-link" data-tab="settings">
+                                    <i class="fa fa-cog"></i> الإعدادات
+                                </button>
+                            </nav>
+                        </div>
+                    </div>
+
+                    <!-- Profile Content Area -->
+                    <div class="col-lg-9">
+                        <!-- المعلومات -->
+                        <div id="tab-info" class="tab-content active" style="display: block;">
+                            <div class="profile-card">
+                                <div class="row">
+                                    <div class="col-md-3 text-center mb-4">
+                                        <div id="avatarContainer" style="width: 120px; height: 120px; margin: 0 auto; position: relative;">
+                                            <img id="userAvatar" src="" alt="صورة المستخدم" class="rounded-circle img-fluid" style="width: 120px; height: 120px; object-fit: cover; border: 3px solid #DA9F5B; display: none; position: absolute; top: 0; left: 0;">
+                                            <div id="defaultAvatar" class="d-flex align-items-center justify-content-center rounded-circle bg-light" style="width: 120px; height: 120px; border: 3px solid #DA9F5B; position: absolute; top: 0; left: 0;">
+                                            <i class="fa fa-user fa-3x text-muted"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <h3 class="mb-4"><i class="fa fa-user text-primary"></i> المعلومات الشخصية</h3>
+                                        <div class="profile-info-item">
+                                            <strong>الاسم المعروض:</strong>
+                                            <span id="userFullName">غير محدد</span>
+                                        </div>
+                                        <div class="profile-info-item">
+                                            <strong>البريد الإلكتروني:</strong>
+                                            <span id="userEmail">غير محدد</span>
+                                        </div>
+                                        <div class="profile-info-item">
+                                            <strong>طريقة تسجيل الدخول:</strong>
+                                            <span id="userProvider">غير محدد</span>
+                                        </div>
+                                        <div class="profile-info-item">
+                                            <strong>آخر تسجيل دخول:</strong>
+                                            <span id="userLastLogin">غير محدد</span>
+                                        </div>
+                                        <div class="profile-info-item">
+                                            <strong>عضو منذ:</strong>
+                                            <span id="userMemberSince">غير محدد</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <button class="btn btn-outline-danger" onclick="logout(event)">
+                                        <i class="fa fa-sign-out-alt"></i> تسجيل الخروج
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- الأجهزة -->
+                        <div id="tab-devices" class="tab-content" style="display: none;">
+                            <div class="profile-card">
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <div>
+                                        <h3 class="mb-2"><i class="fa fa-desktop text-primary"></i> الأجهزة المسجلة</h3>
+                                        <p class="text-muted mb-0">جميع الأجهزة التي سجلت دخول على حسابك</p>
+                                    </div>
+                                    <button class="btn btn-outline-primary btn-sm" onclick="refreshDevicesList()">
+                                        <i class="fa fa-sync-alt"></i> تحديث
+                                    </button>
+                                </div>
+                                <div id="devicesList">
+                                    <div class="text-center">
+                                        <i class="fa fa-spinner fa-spin"></i> جاري التحميل...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- الطلبات -->
+                        <div id="tab-orders" class="tab-content" style="display: none;">
+                            <div class="profile-card">
+                                <h3 class="mb-4"><i class="fa fa-shopping-cart text-primary"></i> الطلبات</h3>
+                                <p class="text-muted mb-4">جميع مشترياتك من المنتجات والنقاط</p>
+                                <div id="ordersList">
+                                    <div class="text-center">
+                                        <i class="fa fa-spinner fa-spin"></i> جاري التحميل...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- الإعدادات -->
+                        <div id="tab-settings" class="tab-content" style="display: none;">
+                            <div class="profile-card">
+                                <h3 class="mb-4"><i class="fa fa-cog text-primary"></i> الإعدادات</h3>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>العملة المفضلة</label>
+                                            <select class="form-control" id="currencySetting">
+                                                <option value="SAR">ريال سعودي (SAR)</option>
+                                                <option value="USD">دولار أمريكي (USD)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button class="btn btn-primary" onclick="saveSettings()">
+                                    <i class="fa fa-save"></i> حفظ الإعدادات
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Profile Content End -->
+
+    <!-- Login Modal -->
+    <div class="modal fade login-modal" id="loginModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="login-header">
+                    <h3><i class="fa fa-sign-in-alt"></i> تسجيل الدخول</h3>
+                    <p class="mb-0">اختر طريقة تسجيل الدخول المفضلة</p>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="text-center">
+                        <!-- Google Sign In -->
+                        <button class="btn btn-danger btn-block btn-lg mb-3 social-btn" onclick="signInWithGoogle(event)">
+                            <i class="fab fa-google mr-2"></i>
+                            تسجيل الدخول بواسطة Google
+                        </button>
+                        
+                        <hr class="my-4">
+                        
+                        <!-- Information Section -->
+                        <div class="text-muted small">
+                            <p class="mb-2"><i class="fa fa-shield-alt text-success"></i> تسجيل الدخول آمن ومحمي</p>
+                            <p class="mb-2"><i class="fa fa-user-check text-primary"></i> لن نقوم بنشر أي شيء على حسابك</p>
+                            <p class="mb-0"><i class="fa fa-lock text-warning"></i> نحن نحترم خصوصيتك تماماً</p>
+                        </div>
+                        
+                        <div class="mt-4 text-center">
+                            <small class="text-muted">
+                                بتسجيل الدخول، فإنك توافق على 
+                                <a href="#" class="text-primary">شروط الاستخدام</a> و 
+                                <a href="#" class="text-primary">سياسة الخصوصية</a>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Footer Start -->
+    <div class="container-fluid footer text-white mt-5 pt-5 px-0 position-relative overlay-top">
+        <div class="row mx-0 pt-5 px-sm-3 px-lg-5 mt-4">
+            <div class="col-lg-3 col-md-6 mb-5">
+                <h4 class="text-white text-uppercase mb-4" style="letter-spacing: 3px;">تواصل معنا</h4>
+                <p><i class="fa fa-map-marker-alt mr-2"></i>123 شارع مثال، نيويورك، الولايات المتحدة</p>
+                <p><i class="fa fa-phone-alt mr-2"></i>+012 345 67890</p>
+                <p class="m-0"><i class="fa fa-envelope mr-2"></i>info@example.com</p>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-5">
+                <h4 class="text-white text-uppercase mb-4" style="letter-spacing: 3px;">تابعنا</h4>
+                <p>تابع أحدث أخبارنا وعروضنا على منصات التواصل.</p>
+                <div class="d-flex justify-content-start">
+                    <a class="btn btn-lg btn-outline-light btn-lg-square mr-2" href="#"><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-lg btn-outline-light btn-lg-square mr-2" href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-lg btn-outline-light btn-lg-square mr-2" href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a class="btn btn-lg btn-outline-light btn-lg-square" href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-5">
+                <h4 class="text-white text-uppercase mb-4" style="letter-spacing: 3px;">ساعات العمل</h4>
+                <div>
+                    <h6 class="text-white text-uppercase">الاثنين - الجمعة</h6>
+                    <p>8:00 ص - 8:00 م</p>
+                    <h6 class="text-white text-uppercase">السبت - الأحد</h6>
+                    <p>2:00 م - 8:00 م</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-5">
+                <h4 class="text-white text-uppercase mb-4" style="letter-spacing: 3px;">النشرة البريدية</h4>
+                <p>اشترك ليصلك كل جديد من عروض وأخبار.</p>
+                <div class="w-100">
+                    <div class="input-group">
+                        <input type="text" class="form-control border-light" style="padding: 25px;" placeholder="بريدك الإلكتروني">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary font-weight-bold px-3">اشترك</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid text-center text-white border-top mt-4 py-4 px-sm-3 px-md-5" style="border-color: rgba(256, 256, 256, .1) !important;">
+            <p class="mb-2 text-white">جميع الحقوق محفوظه Saud حقوق النشر</p>
+            <p class="m-0 text-white">التصميم بواسطه Saudmohammad</p>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="lib/tempusdominus/js/moment.min.js"></script>
+    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="js/main.js"></script>
+
+    <!-- Firebase Auth Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
+    
+    <!-- Firebase Config -->
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDBlGaghNVTvLXiykCaIrTszEVuHd5TG4U",
+            authDomain: "coffeenoir-1fe6b.firebaseapp.com",
+            projectId: "coffeenoir-1fe6b",
+            storageBucket: "coffeenoir-1fe6b.firebasestorage.app",
+            messagingSenderId: "846057487909",
+            appId: "1:846057487909:web:37490e1ef5d53ebc4989cc",
+            measurementId: "G-4XB0L1T0XM"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        
+        // Initialize services
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const analytics = firebase.analytics();
+        
+        // Initialize OAuth providers
+        const googleProvider = new firebase.auth.GoogleAuthProvider();
+        
+        // Current user state
+        let currentUser = null;
+        
+        // Configure Google provider
+        googleProvider.addScope('profile');
+        googleProvider.addScope('email');
+        googleProvider.setCustomParameters({
+            'login_hint': 'user@example.com'
+        });
+    </script>
+
+    <!-- Profile Page JavaScript -->
+    <script>
+        // Initialize authentication system
+        function initializeAuth() {
+            // Auth state observer مع تحسينات
+            auth.onAuthStateChanged(async (user) => {
+                console.log('Auth state changed:', user ? 'User logged in' : 'User logged out');
+                
+                currentUser = user;
+                if (user) {
+                    console.log('User signed in:', user.displayName || user.email);
+                    
+                    // تحديث فوري للـ UI أولاً
+                    updateUI(true);
+                    
+                    // ثم تحميل البيانات في الخلفية
+                    try {
+                    // Log sign in event
+                    await logUserActivity(user.uid, 'sign_in', {
+                        provider: user.providerData[0]?.providerId || 'unknown',
+                        displayName: user.displayName,
+                        email: user.email
+                    });
+                    
+                        // Create or update user profile first
+                    await createOrUpdateUserProfile(user);
+                    
+                        // Then add/update current device
+                        await addCurrentDevice(user.uid);
+                        
+                        // Load user data
+                    loadUserData(user.uid);
+                        
+                    } catch (error) {
+                        console.error('Error in background auth operations:', error);
+                        // الـ UI يبقى يعمل حتى لو فشلت العمليات الخلفية
+                    }
+                    
+                } else {
+                    console.log('User signed out');
+                    // تحديث فوري للـ UI
+                    updateUI(false);
+                }
+            });
+        }
+
+        // Update UI based on authentication state
+        function updateUI(isSignedIn) {
+            const loginAlert = document.getElementById('loginAlert');
+            const profileContent = document.getElementById('profileContent');
+            
+            if (loginAlert && profileContent) {
+                if (isSignedIn) {
+                    loginAlert.style.display = 'none';
+                    profileContent.style.display = 'block';
+                } else {
+                    loginAlert.style.display = 'block';
+                    profileContent.style.display = 'none';
+                    
+                    // إعادة تعيين الصور عند تسجيل الخروج
+                    const avatarElement = document.getElementById('userAvatar');
+                    const defaultAvatar = document.getElementById('defaultAvatar');
+                    if (avatarElement && defaultAvatar) {
+                        avatarElement.style.display = 'none';
+                        avatarElement.src = '';
+                        defaultAvatar.style.display = 'flex';
+                    }
+                }
+            }
+        }
+
+        // Create or update user profile in Firestore
+        async function createOrUpdateUserProfile(user) {
+            try {
+                console.log("👤 Creating/updating user profile for:", user.uid, user.displayName);
+                
+                const userRef = db.collection("users").doc(user.uid);
+                const userDoc = await userRef.get();
+                
+                const userData = {
+                    uid: user.uid,
+                    email: user.email,
+                    displayName: user.displayName,
+                    photoURL: user.photoURL,
+                    provider: user.providerData[0]?.providerId || 'unknown',
+                    lastLoginAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                
+                console.log("📝 User data to save:", userData);
+                
+                if (userDoc.exists) {
+                    // Update existing user
+                    console.log("🔄 Updating existing user profile");
+                    await userRef.update(userData);
+                    console.log('✅ User profile updated successfully');
+                } else {
+                    // Create new user profile
+                    console.log("➕ Creating new user profile");
+                    userData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                    userData.settings = {
+                        language: 'ar',
+                        currency: 'SAR',
+                        emailNotifications: true,
+                        pushNotifications: true
+                    };
+                    
+                    await userRef.set(userData);
+                    console.log('✅ New user profile created successfully');
+                    
+                    // Log analytics event for new user
+                    analytics.logEvent('sign_up', {
+                        method: userData.provider
+                    });
+                }
+                
+                // التحقق من النتيجة
+                const verifyDoc = await userRef.get();
+                if (verifyDoc.exists) {
+                    const savedData = verifyDoc.data();
+                    console.log("✅ Verification: Profile saved correctly:", savedData.displayName, savedData.email);
+                } else {
+                    console.error("❌ Verification failed: Profile not found after save");
+                }
+                
+            } catch (error) {
+                console.error("❌ Error creating/updating user profile:", error);
+                console.error("Error details:", error.code, error.message);
+                
+                // Fallback to localStorage if Firestore fails
+                console.log("🔧 Falling back to localStorage...");
+                createOrUpdateUserProfileLocal(user);
+            }
+        }
+
+        // Fallback function using localStorage
+        function createOrUpdateUserProfileLocal(user) {
+            try {
+                const userData = {
+                    uid: user.uid,
+                    email: user.email,
+                    displayName: user.displayName,
+                    photoURL: user.photoURL,
+                    provider: user.providerData[0]?.providerId || 'unknown',
+                    lastLoginAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString(),
+                    settings: {
+                        language: 'ar',
+                        currency: 'SAR',
+                        emailNotifications: true,
+                        pushNotifications: true
+                    }
+                };
+
+                // Check if user exists in localStorage
+                const existingUsers = JSON.parse(localStorage.getItem('users') || '{}');
+                if (!existingUsers[user.uid]) {
+                    userData.createdAt = new Date().toISOString();
+                    console.log('New user profile created (localStorage)');
+                }
+
+                existingUsers[user.uid] = userData;
+                localStorage.setItem('users', JSON.stringify(existingUsers));
+                console.log('User profile updated (localStorage)');
+
+            } catch (error) {
+                console.error("Error creating/updating user profile (localStorage):", error);
+            }
+        }
+
+        // Load user data and update UI elements
+        async function loadUserData(userId) {
+            try {
+                console.log("👤 Loading user data for userId:", userId);
+                
+                const userDoc = await db.collection("users").doc(userId).get();
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    console.log("📊 User data loaded from Firebase:", userData.displayName, userData.email);
+                    updateUserUI(userData);
+                } else {
+                    console.log("⚠️ User document does not exist in Firebase");
+                    // إنشاء مستند المستخدم إذا لم يكن موجوداً
+                    if (currentUser) {
+                        await createOrUpdateUserProfile(currentUser);
+                        // إعادة المحاولة
+                        return await loadUserData(userId);
+                    }
+                }
+            } catch (error) {
+                console.error("❌ Error loading user data from Firebase:", error);
+                // Fallback to localStorage
+                loadUserDataLocal(userId);
+            }
+        }
+
+        // Fallback function using localStorage
+        function loadUserDataLocal(userId) {
+            try {
+                const users = JSON.parse(localStorage.getItem('users') || '{}');
+                const userData = users[userId];
+                
+                if (userData) {
+                    updateUserUI(userData);
+                }
+            } catch (error) {
+                console.error("Error loading user data (localStorage):", error);
+            }
+        }
+
+        // Update UI with user data
+        function updateUserUI(userData) {
+            console.log("🎨 Updating UI with user data:", userData);
+            
+            // Update navbar points display
+            if (window.pointsManager) {
+                window.pointsManager.updateAllDisplays();
+            }
+            
+            // Update profile elements if they exist
+            const elements = [
+                { id: 'userFullName', value: userData.displayName || 'غير محدد' },
+                { id: 'userEmail', value: userData.email || 'غير محدد' },
+                { id: 'userProvider', value: getProviderName(userData.provider) || 'غير محدد' },
+                { id: 'userLastLogin', value: formatDate(userData.lastLoginAt) || 'غير محدد' },
+                { id: 'userMemberSince', value: formatDate(userData.createdAt) || 'غير محدد' }
+            ];
+            
+            elements.forEach(element => {
+                const el = document.getElementById(element.id);
+                if (el) {
+                    console.log(`🔄 Updating ${element.id}: "${el.textContent}" → "${element.value}"`);
+                    el.textContent = element.value;
+                } else {
+                    console.log(`⚠️ Element not found: ${element.id}`);
+                }
+            });
+            
+            // Update user avatar if exists
+            const avatarElement = document.getElementById('userAvatar');
+            const defaultAvatar = document.getElementById('defaultAvatar');
+            if (avatarElement && defaultAvatar) {
+                if (userData.photoURL) {
+                    // إظهار صورة Google وإخفاء الصورة الافتراضية
+                    console.log("🖼️ Showing Google profile picture");
+                avatarElement.src = userData.photoURL;
+                avatarElement.style.display = 'block';
+                    defaultAvatar.style.display = 'none';
+                } else {
+                    // إظهار الصورة الافتراضية وإخفاء صورة Google
+                    console.log("👤 Showing default avatar");
+                    avatarElement.style.display = 'none';
+                    defaultAvatar.style.display = 'flex';
+                }
+            }
+            
+            console.log("✅ UI update completed");
+        }
+
+        // Get provider display name
+        function getProviderName(providerId) {
+            switch (providerId) {
+                case 'google.com': return 'Google';
+                case 'twitter.com': return 'Twitter';
+                default: return 'غير معروف';
+            }
+        }
+
+        // Format date for display
+        function formatDate(timestamp) {
+            if (!timestamp) return null;
+            
+            let date;
+            if (timestamp.seconds) {
+                // Firestore Timestamp
+                date = new Date(timestamp.seconds * 1000);
+            } else {
+                date = new Date(timestamp);
+            }
+            
+            return date.toLocaleDateString('ar-SA', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // Log user activity to Firestore
+        async function logUserActivity(userId, action, metadata = {}) {
+            try {
+                const activityData = {
+                    userId: userId,
+                    action: action, // 'sign_in', 'sign_out', 'profile_update', etc.
+                    metadata: metadata,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    userAgent: navigator.userAgent,
+                    ip: 'client-side' // Would need server-side for real IP
+                };
+                
+                await db.collection("user_activity").add(activityData);
+                console.log(`Activity logged: ${action} for user ${userId}`);
+                
+                // Also log to Analytics
+                analytics.logEvent(action, {
+                    user_id: userId,
+                    ...metadata
+                });
+                
+            } catch (error) {
+                console.error("Error logging user activity:", error);
+                // Fallback to localStorage
+                logUserActivityLocal(userId, action, metadata);
+            }
+        }
+
+        // Fallback function using localStorage
+        function logUserActivityLocal(userId, action, metadata = {}) {
+            try {
+                const activityData = {
+                    id: Date.now().toString(),
+                    userId: userId,
+                    action: action,
+                    metadata: metadata,
+                    timestamp: new Date().toISOString(),
+                    userAgent: navigator.userAgent,
+                    ip: 'client-side'
+                };
+                
+                const activities = JSON.parse(localStorage.getItem('user_activities') || '[]');
+                activities.push(activityData);
+                
+                // Keep only last 100 activities
+                if (activities.length > 100) {
+                    activities.splice(0, activities.length - 100);
+                }
+                
+                localStorage.setItem('user_activities', JSON.stringify(activities));
+                console.log(`Activity logged (localStorage): ${action} for user ${userId}`);
+                
+            } catch (error) {
+                console.error("Error logging user activity (localStorage):", error);
+            }
+        }
+
+        // Sign in with Google
+        async function signInWithGoogle(event) {
+            try {
+                console.log('Attempting Google sign in...');
+                
+                // إظهار loading على الزر
+                const loginButton = event?.target;
+                if (loginButton) {
+                    loginButton.disabled = true;
+                    loginButton.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i>جاري تسجيل الدخول...';
+                }
+                
+                const result = await auth.signInWithPopup(googleProvider);
+                const user = result.user;
+                
+                console.log('Google sign in successful:', user.displayName);
+                
+                // إغلاق الـ modal بشكل صحيح
+                $('#loginModal').modal('hide');
+                
+                // انتظار إغلاق الـ modal تماماً
+                $('#loginModal').on('hidden.bs.modal', function() {
+                    // Log analytics event (في الخلفية)
+                analytics.logEvent('login', {
+                    method: 'google'
+                    }).catch(error => console.log('Analytics failed:', error));
+                    
+                    // Refresh تلقائي بعد إغلاق الـ modal
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 300);
+                });
+                
+            } catch (error) {
+                console.error('Google sign in error:', error);
+                
+                // إعادة تفعيل الزر
+                const loginButton = event?.target;
+                if (loginButton) {
+                    loginButton.disabled = false;
+                    loginButton.innerHTML = '<i class="fab fa-google mr-2"></i>تسجيل الدخول بواسطة Google';
+                }
+                
+                // لا نظهر أي رسائل خطأ، فقط نسجل في الكونسول
+                // في حالة الإلغاء أو الأخطاء البسيطة، لا نفعل شيء
+                if (error.code === 'auth/popup-closed-by-user' || 
+                    error.code === 'auth/cancelled-popup-request') {
+                    return; // لا نفعل شيء للإلغاء
+                }
+                
+                // للأخطاء الأخرى، نسجل فقط في الكونسول
+                console.log('Login failed, but no user notification shown');
+            }
+        }
+
+
+
+        // Close all modals
+        function closeAllModals() {
+            // Close Bootstrap modals
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                const modalInstance = window.bootstrap?.Modal?.getInstance(modal);
+                if (modalInstance) {
+                    modalInstance.hide();
+                } else {
+                    modal.style.display = 'none';
+                }
+            });
+            
+            // Remove backdrop
+            const backdrops = document.querySelectorAll('.modal-backdrop');
+            backdrops.forEach(backdrop => backdrop.remove());
+            
+            // Remove modal-open class from body
+            document.body.classList.remove('modal-open');
+            document.body.style.paddingRight = '';
+        }
+
+        // Logout function
+        async function logout(event) {
+            if (!currentUser) {
+                return;
+            }
+            
+            try {
+                // إظهار loading على الزر
+                const logoutButton = event?.target;
+                if (logoutButton) {
+                    logoutButton.disabled = true;
+                    logoutButton.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i>جاري تسجيل الخروج...';
+                }
+                
+                // Log sign out activity before signing out (في الخلفية)
+                logUserActivity(currentUser.uid, 'sign_out', {
+                    provider: currentUser.providerData[0]?.providerId || 'unknown',
+                    displayName: currentUser.displayName,
+                    sessionDuration: Date.now() - (currentUser.metadata.lastSignInTime ? new Date(currentUser.metadata.lastSignInTime).getTime() : Date.now())
+                }).catch(error => console.log('Activity logging failed:', error));
+                
+                // Sign out
+                await auth.signOut();
+                
+                // Log analytics event (في الخلفية)
+                analytics.logEvent('logout', {}).catch(error => console.log('Analytics failed:', error));
+                
+                // Refresh تلقائي فوري
+                setTimeout(() => {
+                    window.location.reload();
+                }, 500);
+                
+            } catch (error) {
+                console.error("Error signing out:", error);
+                
+                // في حالة الخطأ، نقوم بrefresh أيضاً
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+            }
+        }
+
+
+
+
+
+
+
+        // Get user activity history
+        async function getUserActivityHistory(userId, limitCount = 10) {
+            try {
+                const querySnapshot = await db.collection("user_activity")
+                    .where("userId", "==", userId)
+                    .orderBy("timestamp", "desc")
+                    .limit(limitCount)
+                    .get();
+                
+                const activities = [];
+                
+                querySnapshot.forEach((doc) => {
+                    activities.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+                
+                return activities;
+            } catch (error) {
+                console.error("Error getting user activity:", error);
+                // Fallback to localStorage
+                return getUserActivityHistoryLocal(userId, limitCount);
+            }
+        }
+
+        // Fallback function using localStorage
+        function getUserActivityHistoryLocal(userId, limitCount = 10) {
+            try {
+                const activities = JSON.parse(localStorage.getItem('user_activities') || '[]');
+                const userActivities = activities
+                    .filter(activity => activity.userId === userId)
+                    .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+                    .slice(0, limitCount);
+                
+                return userActivities;
+            } catch (error) {
+                console.error("Error getting user activity (localStorage):", error);
+                return [];
+            }
+        }
+
+        // Profile tabs functionality
+        document.querySelectorAll('.profile-nav .nav-link').forEach(link => {
+            link.addEventListener('click', function() {
+                // Remove active from all links and tabs
+                document.querySelectorAll('.profile-nav .nav-link').forEach(l => l.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
+                
+                // Add active to clicked link and show corresponding tab
+                this.classList.add('active');
+                const tabId = 'tab-' + this.dataset.tab;
+                const tabElement = document.getElementById(tabId);
+                if (tabElement) {
+                    tabElement.style.display = 'block';
+                    
+                    // Load devices if devices tab is selected
+                    if (this.dataset.tab === 'devices') {
+                        loadDevicesHistory();
+                    }
+                    // Load orders if orders tab is selected
+                    else if (this.dataset.tab === 'orders') {
+                        loadOrdersHistory();
+                    }
+                }
+            });
+        });
+
+        // Load devices history
+        async function loadDevicesHistory() {
+            const devicesList = document.getElementById('devicesList');
+            
+            console.log("🖥️ Loading devices history...");
+            
+            if (!currentUser) {
+                console.log("❌ No current user found");
+                devicesList.innerHTML = '<div class="text-muted text-center">يرجى تسجيل الدخول أولاً</div>';
+                return;
+            }
+            
+            console.log("👤 Current user:", currentUser.uid, currentUser.displayName);
+            
+            try {
+                devicesList.innerHTML = '<div class="text-center"><i class="fa fa-spinner fa-spin"></i> جاري التحميل...</div>';
+                
+                console.log("🔄 Calling getUserDevices...");
+                const devices = await getUserDevices(currentUser.uid);
+                console.log("📱 Received devices:", devices.length);
+                
+                if (devices.length === 0) {
+                    console.log("⚠️ No devices returned");
+                    devicesList.innerHTML = '<div class="text-muted text-center">لا توجد أجهزة مسجلة</div>';
+                    return;
+                }
+                
+                let html = '';
+                devices.forEach((device, index) => {
+                    console.log(`📱 Processing device ${index + 1}:`, device.name, device.type, device.isCurrent);
+                    
+                    const lastSeen = device.lastSeen ? formatDate(device.lastSeen) : 'غير محدد';
+                    const deviceIcon = getDeviceIcon(device.type);
+                    const isCurrentDevice = device.isCurrent ? '<span class="badge badge-success mr-2">الجهاز الحالي</span>' : '';
+                    const browserInfo = device.browser ? `<br><small class="text-info">المتصفح: ${device.browser}</small>` : '';
+                    
+                    html += `
+                        <div class="activity-item">
+                            <div class="d-flex align-items-center">
+                                <div class="mr-3">
+                                    ${deviceIcon}
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="font-weight-medium">
+                                        ${isCurrentDevice}
+                                        ${device.name || 'جهاز غير معروف'}
+                                    </div>
+                                    <small class="text-muted">آخر نشاط: ${lastSeen}</small>
+                                    <br>
+                                    <small class="text-muted">${device.location || 'موقع غير معروف'}</small>
+                                    ${browserInfo}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                console.log("🎨 Updating devices list HTML");
+                devicesList.innerHTML = html;
+                console.log("✅ Devices history loaded successfully");
+                
+            } catch (error) {
+                console.error('❌ Error loading devices history:', error);
+                devicesList.innerHTML = '<div class="text-danger text-center">حدث خطأ في تحميل قائمة الأجهزة</div>';
+            }
+        }
+
+        // Load orders history
+        async function loadOrdersHistory() {
+            const ordersList = document.getElementById('ordersList');
+            
+            if (!currentUser) {
+                ordersList.innerHTML = '<div class="text-muted text-center">يرجى تسجيل الدخول أولاً</div>';
+                return;
+            }
+            
+            try {
+                ordersList.innerHTML = '<div class="text-center"><i class="fa fa-spinner fa-spin"></i> جاري التحميل...</div>';
+                
+                // محاكاة بيانات الطلبات (يمكن استبدالها ببيانات حقيقية من Firebase)
+                const orders = await getUserOrders(currentUser.uid);
+                
+                if (orders.length === 0) {
+                    ordersList.innerHTML = '<div class="text-muted text-center">لا توجد طلبات</div>';
+                    return;
+                }
+                
+                let html = '';
+                orders.forEach(order => {
+                    const orderDate = order.date ? formatDate(order.date) : 'تاريخ غير محدد';
+                    const statusBadge = getOrderStatusBadge(order.status);
+                    let orderIcon = '<i class="fa fa-shopping-cart text-info fa-2x"></i>';
+                    
+                    if (order.type === 'points') {
+                        orderIcon = '<i class="fa fa-coins text-warning fa-2x"></i>';
+                    } else if (order.type === 'menu') {
+                        orderIcon = '<i class="fa fa-coffee text-brown fa-2x"></i>';
+                    }
+                    
+                    html += `
+                        <div class="activity-item">
+                            <div class="d-flex align-items-center">
+                                <div class="mr-3">
+                                    ${orderIcon}
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="font-weight-medium">
+                                        ${order.title}
+                                        ${statusBadge}
+                                    </div>
+                                    <small class="text-muted">التاريخ: ${orderDate}</small>
+                                    <br>
+                                    <small class="text-primary font-weight-bold">التكلفة: ${order.amount}</small>
+                                    ${order.type === 'menu' ? '<br><small class="text-success"><i class="fa fa-check-circle mr-1"></i>مدفوع بالنقاط</small>' : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                ordersList.innerHTML = html;
+                
+            } catch (error) {
+                console.error('Error loading orders history:', error);
+                ordersList.innerHTML = '<div class="text-danger text-center">حدث خطأ في تحميل قائمة الطلبات</div>';
+            }
+        }
+
+        // Get device icon based on type
+        function getDeviceIcon(deviceType) {
+            switch (deviceType) {
+                case 'mobile': 
+                    return '<i class="fa fa-mobile-alt text-primary fa-2x"></i>';
+                case 'desktop': 
+                    return '<i class="fa fa-desktop text-info fa-2x"></i>';
+                case 'tablet': 
+                    return '<i class="fa fa-tablet-alt text-success fa-2x"></i>';
+                default: 
+                    return '<i class="fa fa-laptop text-secondary fa-2x"></i>';
+            }
+        }
+
+        // Get order status badge
+        function getOrderStatusBadge(status) {
+            switch (status) {
+                case 'completed': 
+                    return '<span class="badge badge-success mr-2">مكتمل</span>';
+                case 'pending': 
+                    return '<span class="badge badge-warning mr-2">في الانتظار</span>';
+                case 'cancelled': 
+                    return '<span class="badge badge-danger mr-2">ملغي</span>';
+                default: 
+                    return '<span class="badge badge-secondary mr-2">غير معروف</span>';
+            }
+        }
+
+        // Get user devices from Firebase
+        async function getUserDevices(userId) {
+            try {
+                console.log("🔍 Getting devices for userId:", userId);
+                
+                // البحث في collection "user_devices"
+                const devicesQuery = await db.collection("user_devices")
+                    .where("userId", "==", userId)
+                    .orderBy("lastSeen", "desc")
+                    .limit(10)
+                    .get();
+                
+                console.log("📊 Query result size:", devicesQuery.size);
+                
+                const devices = [];
+                devicesQuery.forEach((doc) => {
+                    const deviceData = doc.data();
+                    console.log("📱 Found device:", deviceData.name, "(Current:", deviceData.isCurrent + ")");
+                    devices.push({
+                        id: doc.id,
+                        ...deviceData
+                    });
+                });
+                
+                console.log("📱 Total devices found:", devices.length);
+                
+                // إذا لم توجد أجهزة مسجلة، إضافة الجهاز الحالي
+                if (devices.length === 0) {
+                    console.log("⚠️ No devices found, adding current device...");
+                    await addCurrentDevice(userId);
+                    console.log("🔄 Retrying getUserDevices...");
+                    return await getUserDevices(userId); // إعادة الاستدعاء
+                }
+                
+                return devices;
+                
+            } catch (error) {
+                console.error("❌ Error getting user devices:", error);
+                
+                // طباعة تفاصيل الخطأ
+                if (error.code) {
+                    console.error("Error code:", error.code);
+                    console.error("Error message:", error.message);
+                }
+                
+                // قد تكون المشكلة في قواعد Firestore، لذلك نحاول إضافة الجهاز الحالي
+                console.log("🔧 Attempting to add current device as fallback...");
+                try {
+                    await addCurrentDevice(userId);
+                    console.log("✅ Fallback device addition successful");
+                } catch (addError) {
+                    console.error("❌ Fallback device addition failed:", addError);
+                }
+                
+                // في حالة الخطأ، إرجاع بيانات افتراضية
+                return [
+                    {
+                        id: 'fallback-current',
+                        name: "تم تسجيل الدخول عبر الفرونت اند",
+                        browser: detectDeviceName(),
+                        type: detectDeviceType(),
+                        location: 'غير محدد',
+                        lastSeen: new Date(),
+                        isCurrent: true,
+                        userId: userId,
+                        userAgent: navigator.userAgent,
+                        loginMethod: "frontend_login"
+                    }
+                ];
+            }
+        }
+
+        // Add current device to Firebase
+        async function addCurrentDevice(userId) {
+            try {
+                console.log("🔍 Starting addCurrentDevice for userId:", userId);
+                
+                const deviceData = {
+                    userId: userId,
+                    name: "تم تسجيل الدخول عبر الفرونت اند",
+                    type: detectDeviceType(),
+                    browser: detectDeviceName(),
+                    userAgent: navigator.userAgent,
+                    location: await getLocationName(),
+                    lastSeen: firebase.firestore.FieldValue.serverTimestamp(),
+                    isCurrent: true,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    loginMethod: "frontend_login"
+                };
+                
+                console.log("📱 Device data to add:", deviceData);
+                
+                // البحث عن جهاز مشابه موجود (نفس المتصفح ونفس النظام)
+                const deviceFingerprint = `${deviceData.browser}_${deviceData.type}_${userId}`;
+                
+                const existingDeviceQuery = await db.collection("user_devices")
+                    .where("userId", "==", userId)
+                    .where("browser", "==", deviceData.browser)
+                    .where("type", "==", deviceData.type)
+                    .limit(1)
+                    .get();
+                
+                const batch = db.batch();
+                
+                if (!existingDeviceQuery.empty) {
+                    // تحديث الجهاز الموجود
+                    const existingDevice = existingDeviceQuery.docs[0];
+                    console.log("📝 Updating existing device:", existingDevice.id);
+                    
+                    batch.update(existingDevice.ref, {
+                        lastSeen: firebase.firestore.FieldValue.serverTimestamp(),
+                        isCurrent: true,
+                        userAgent: deviceData.userAgent,
+                        location: deviceData.location
+                    });
+                } else {
+                    // إضافة جهاز جديد
+                    console.log("➕ Adding new device");
+                    const newDeviceRef = db.collection("user_devices").doc();
+                    batch.set(newDeviceRef, deviceData);
+                }
+                
+                // تحديث جميع الأجهزة الأخرى لتكون غير حالية
+                const otherCurrentDevices = await db.collection("user_devices")
+                    .where("userId", "==", userId)
+                    .where("isCurrent", "==", true)
+                    .get();
+                
+                otherCurrentDevices.forEach((doc) => {
+                    // تحديث فقط الأجهزة الأخرى (ليس الجهاز الحالي)
+                    const docData = doc.data();
+                    if (docData.browser !== deviceData.browser || docData.type !== deviceData.type) {
+                        batch.update(doc.ref, { isCurrent: false });
+                    }
+                });
+                
+                await batch.commit();
+                console.log("✅ Device registration completed successfully");
+                
+                // التحقق من النتيجة
+                const verifyQuery = await db.collection("user_devices")
+                    .where("userId", "==", userId)
+                    .get();
+                
+                console.log("📊 Total devices for user:", verifyQuery.size);
+                verifyQuery.forEach(doc => {
+                    const data = doc.data();
+                    console.log(`📱 Device: ${data.name} (${data.type}) - Current: ${data.isCurrent}`);
+                });
+                
+                // إشعار نجاح (فقط في الكونسول لعدم إزعاج المستخدم)
+                if (verifyQuery.size > 0) {
+                    console.log("🎉 Device successfully registered and verified in Firebase");
+                } else {
+                    console.warn("⚠️ Device registration may have failed - no devices found after commit");
+                }
+                
+            } catch (error) {
+                console.error("❌ Error adding current device:", error);
+                
+                // معلومات إضافية للتشخيص
+                console.error("Debug info:", {
+                    userId: userId,
+                    deviceName: detectDeviceName(),
+                    deviceType: detectDeviceType(),
+                    userAgent: navigator.userAgent
+                });
+            }
+        }
+
+        // Detect device name
+        function detectDeviceName() {
+            const userAgent = navigator.userAgent;
+            
+            if (userAgent.includes('Chrome')) {
+                if (userAgent.includes('Windows')) return 'Chrome على Windows';
+                if (userAgent.includes('Mac')) return 'Chrome على Mac';
+                if (userAgent.includes('Linux')) return 'Chrome على Linux';
+                return 'Chrome';
+            } else if (userAgent.includes('Firefox')) {
+                return 'Firefox';
+            } else if (userAgent.includes('Safari') && !userAgent.includes('Chrome')) {
+                if (userAgent.includes('iPhone')) return 'Safari على iPhone';
+                if (userAgent.includes('iPad')) return 'Safari على iPad';
+                if (userAgent.includes('Mac')) return 'Safari على Mac';
+                return 'Safari';
+            } else if (userAgent.includes('Edge')) {
+                return 'Microsoft Edge';
+            }
+            
+            return 'متصفح غير معروف';
+        }
+
+        // Detect device type
+        function detectDeviceType() {
+            const userAgent = navigator.userAgent;
+            
+            if (userAgent.includes('iPhone') || userAgent.includes('Android') && userAgent.includes('Mobile')) {
+                return 'mobile';
+            } else if (userAgent.includes('iPad') || userAgent.includes('Android') && !userAgent.includes('Mobile')) {
+                return 'tablet';
+            } else {
+                return 'desktop';
+            }
+        }
+
+        // Get location name (simplified)
+        async function getLocationName() {
+            try {
+                // يمكن تطوير هذا ليستخدم IP geolocation API
+                return 'السعودية'; // افتراضي
+            } catch (error) {
+                return 'غير محدد';
+            }
+        }
+
+        // Get user orders from localStorage and Firebase
+        async function getUserOrders(userId) {
+            try {
+                const orders = [];
+                
+                // First, get orders from localStorage transactions
+                const localTransactions = JSON.parse(localStorage.getItem('transactions') || '[]');
+                
+                // Convert localStorage transactions to orders format
+                localTransactions.forEach(transaction => {
+                    if (transaction.type === 'menu') {
+                        // Menu item orders
+                        transaction.items.forEach(item => {
+                            orders.push({
+                                id: `${transaction.id}_${item.id}`,
+                                title: item.name,
+                                amount: `${item.price} نقطة`,
+                                type: 'menu',
+                                status: transaction.status || 'completed',
+                                date: new Date(transaction.timestamp),
+                                items: [item]
+                            });
+                        });
+                    } else {
+                        // Points purchase orders
+                        orders.push({
+                            id: transaction.id,
+                            title: `شراء ${transaction.totalPoints} نقطة`,
+                            amount: `${transaction.totalAmount} ريال`,
+                            type: 'points',
+                            status: transaction.status || 'completed',
+                            date: new Date(transaction.timestamp),
+                            items: transaction.items
+                        });
+                    }
+                });
+                
+                // Also try to get from Firebase
+                try {
+                    const ordersQuery = await db.collection("user_orders")
+                        .where("userId", "==", userId)
+                        .orderBy("createdAt", "desc")
+                        .limit(20)
+                        .get();
+                    
+                    ordersQuery.forEach((doc) => {
+                        const orderData = doc.data();
+                        orders.push({
+                            id: doc.id,
+                            title: orderData.title || 'طلب غير محدد',
+                            type: orderData.type || 'product',
+                            amount: orderData.amount || 0,
+                            status: orderData.status || 'pending',
+                            date: orderData.createdAt ? orderData.createdAt.toDate() : new Date(),
+                            items: orderData.items || [],
+                            paymentMethod: orderData.paymentMethod || 'غير محدد'
+                        });
+                    });
+                } catch (firebaseError) {
+                    console.log("Firebase orders not available, using localStorage only");
+                }
+                
+                // Sort by date (newest first)
+                orders.sort((a, b) => new Date(b.date) - new Date(a.date));
+                
+                // If no orders found, add sample orders for demonstration
+                if (orders.length === 0) {
+                    await addSampleOrders(userId);
+                    return await getUserOrders(userId); // Re-call
+                }
+                
+                return orders;
+                
+            } catch (error) {
+                console.error("Error getting user orders:", error);
+                return [];
+            }
+        }
+
+        // Add sample orders for demonstration
+        async function addSampleOrders(userId) {
+            try {
+                const sampleOrders = [
+                    {
+                        userId: userId,
+                        title: 'باقة 500 نقطة',
+                        type: 'points',
+                        amount: 500,
+                        status: 'completed',
+                        items: [{ name: 'باقة 500 نقطة', quantity: 1, price: 500 }],
+                        paymentMethod: 'Google Pay',
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    },
+                    {
+                        userId: userId,
+                        title: 'قهوة أمريكانو + كرواسون',
+                        type: 'product',
+                        amount: 25,
+                        status: 'completed',
+                        items: [
+                            { name: 'قهوة أمريكانو', quantity: 1, price: 15 },
+                            { name: 'كرواسون', quantity: 1, price: 10 }
+                        ],
+                        paymentMethod: 'نقاط',
+                        createdAt: firebase.firestore.Timestamp.fromDate(new Date(Date.now() - 3 * 24 * 60 * 60 * 1000))
+                    },
+                    {
+                        userId: userId,
+                        title: 'باقة 100 نقطة',
+                        type: 'points',
+                        amount: 100,
+                        status: 'pending',
+                        items: [{ name: 'باقة 100 نقطة', quantity: 1, price: 100 }],
+                        paymentMethod: 'بطاقة ائتمان',
+                        createdAt: firebase.firestore.Timestamp.fromDate(new Date(Date.now() - 1 * 24 * 60 * 60 * 1000))
+                    }
+                ];
+
+                const batch = db.batch();
+                sampleOrders.forEach(order => {
+                    const orderRef = db.collection("user_orders").doc();
+                    batch.set(orderRef, order);
+                });
+
+                await batch.commit();
+                console.log("Sample orders added to Firebase");
+                
+            } catch (error) {
+                console.error("Error adding sample orders:", error);
+            }
+        }
+
+        // Add order to Firebase (for future use)
+        async function addOrder(userId, orderData) {
+            try {
+                const order = {
+                    userId: userId,
+                    title: orderData.title,
+                    type: orderData.type, // 'points' or 'product'
+                    amount: orderData.amount,
+                    status: 'pending',
+                    items: orderData.items || [],
+                    paymentMethod: orderData.paymentMethod || 'غير محدد',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+
+                const orderRef = await db.collection("user_orders").add(order);
+                
+                // تسجيل النشاط
+                await logUserActivity(userId, 'order_created', {
+                    orderId: orderRef.id,
+                    orderType: orderData.type,
+                    amount: orderData.amount
+                });
+
+                return orderRef.id;
+                
+            } catch (error) {
+                console.error("Error adding order:", error);
+                throw error;
+            }
+        }
+
+        // Save settings
+        async function saveSettings() {
+            if (!currentUser) {
+                alert('يرجى تسجيل الدخول أولاً');
+                return;
+            }
+
+            try {
+                const language = document.getElementById('languageSetting').value;
+                const currency = document.getElementById('currencySetting').value;
+                const emailNotifications = document.getElementById('emailNotifications').checked;
+                const pushNotifications = document.getElementById('pushNotifications').checked;
+
+                // Update settings in Firestore
+                await db.collection("users").doc(currentUser.uid).update({
+                    'settings.language': language,
+                    'settings.currency': currency,
+                    'settings.emailNotifications': emailNotifications,
+                    'settings.pushNotifications': pushNotifications,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                // Also store in localStorage for quick access
+                const settings = {
+                    language,
+                    currency,
+                    emailNotifications,
+                    pushNotifications
+                };
+
+                localStorage.setItem('userSettings', JSON.stringify(settings));
+                alert('تم حفظ الإعدادات بنجاح');
+
+            } catch (error) {
+                console.error('Error saving settings:', error);
+                alert('حدث خطأ في حفظ الإعدادات');
+            }
+        }
+
+        // Load saved settings
+        function loadSettings() {
+            try {
+                const settings = JSON.parse(localStorage.getItem('userSettings') || '{}');
+                
+                if (settings.language) {
+                    document.getElementById('languageSetting').value = settings.language;
+                }
+                if (settings.currency) {
+                    document.getElementById('currencySetting').value = settings.currency;
+                }
+                if (typeof settings.emailNotifications === 'boolean') {
+                    document.getElementById('emailNotifications').checked = settings.emailNotifications;
+                }
+                if (typeof settings.pushNotifications === 'boolean') {
+                    document.getElementById('pushNotifications').checked = settings.pushNotifications;
+                }
+            } catch (error) {
+                console.error('Error loading settings:', error);
+            }
+        }
+
+
+
+
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("🚀 Initializing profile page...");
+            console.log("🔧 Browser:", detectDeviceName());
+            console.log("📱 Device type:", detectDeviceType());
+            console.log("🌐 User Agent:", navigator.userAgent);
+            
+            loadSettings();
+            initializeAuth(); // Start the authentication system
+            
+            // إضافة معلومات debug إضافية
+            console.log("🔍 Firebase Config:", {
+                projectId: firebase.app().options.projectId,
+                authDomain: firebase.app().options.authDomain
+            });
+            
+            console.log("✅ Profile page initialized");
+        });
+
+
+
+        // Refresh devices list manually
+        async function refreshDevicesList() {
+            console.log("🔄 Manual refresh of devices list requested");
+            const refreshBtn = event?.target;
+            
+            if (refreshBtn) {
+                refreshBtn.disabled = true;
+                refreshBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> جاري التحديث...';
+            }
+            
+            try {
+                await loadDevicesHistory();
+                
+                if (refreshBtn) {
+                    refreshBtn.disabled = false;
+                    refreshBtn.innerHTML = '<i class="fa fa-sync-alt"></i> تحديث';
+                }
+                
+                console.log("✅ Manual refresh completed");
+                
+            } catch (error) {
+                console.error("❌ Error during manual refresh:", error);
+                
+                if (refreshBtn) {
+                    refreshBtn.disabled = false;
+                    refreshBtn.innerHTML = '<i class="fa fa-sync-alt"></i> تحديث';
+                }
+            }
+        }
+
+        // Export functions for global access
+        window.saveSettings = saveSettings;
+        window.signInWithGoogle = signInWithGoogle;
+        window.logout = logout;
+
+        window.addOrder = addOrder;
+        window.getUserActivityHistory = getUserActivityHistory;
+        window.refreshDevicesList = refreshDevicesList;
+        
+        // تحديث متغير currentUser في window عند تغيير الحالة
+        Object.defineProperty(window, 'currentUser', {
+            get: function() { return currentUser; },
+            enumerable: true
+        });
+    </script>
+    
+    <!-- Points Manager -->
+    <script src="js/points-manager.js"></script>
+</body>
+
+</html>
