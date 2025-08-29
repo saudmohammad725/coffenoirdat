@@ -166,6 +166,67 @@ app.get('/reservation', (req, res) => {
     res.sendFile(path.join(__dirname, 'reservation.html'));
 });
 
+// Alternative routes (with .html extension for direct access)
+app.get('/index.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+app.get('/menu.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'menu.html'));
+});
+
+app.get('/points.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'points.html'));
+});
+
+app.get('/profile.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'profile.html'));
+});
+
+app.get('/cardpay.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'cardpay.html'));
+});
+
+app.get('/hot-drinks.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'hot-drinks.html'));
+});
+
+app.get('/cold-drinks.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'cold-drinks.html'));
+});
+
+app.get('/desserts.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'desserts.html'));
+});
+
+app.get('/about.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'about.html'));
+});
+
+app.get('/contact.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'contact.html'));
+});
+
+app.get('/service.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'service.html'));
+});
+
+app.get('/menucart.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'menucart.html'));
+});
+
+app.get('/test-points.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'test-points.html'));
+});
+
+app.get('/testimonial.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'testimonial.html'));
+});
+
+app.get('/reservation.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'reservation.html'));
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.error('❌ Error:', err.stack);
