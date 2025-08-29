@@ -5,16 +5,14 @@ const pointsTransactionSchema = new mongoose.Schema({
     transactionId: {
         type: String,
         required: true,
-        unique: true,
-        index: true
+        unique: true
     },
     
     // User Information
     user: {
-        uid: {
-            type: String,
-            required: true,
-            index: true
+                    uid: {
+                type: String,
+                required: true
         },
         name: String,
         email: String

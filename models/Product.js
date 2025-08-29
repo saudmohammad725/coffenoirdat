@@ -27,8 +27,7 @@ const productSchema = new mongoose.Schema({
     category: {
         type: String,
         enum: ['hot_drinks', 'cold_drinks', 'desserts', 'food', 'other'],
-        required: true,
-        index: true
+        required: true
     },
     subcategory: {
         type: String,
@@ -160,8 +159,7 @@ const productSchema = new mongoose.Schema({
     availability: {
         isAvailable: {
             type: Boolean,
-            default: true,
-            index: true
+            default: true
         },
         isSeasonalItem: {
             type: Boolean,
@@ -277,13 +275,11 @@ const productSchema = new mongoose.Schema({
     status: {
         type: String,
         enum: ['draft', 'active', 'inactive', 'discontinued'],
-        default: 'active',
-        index: true
+        default: 'active'
     },
     featured: {
         type: Boolean,
-        default: false,
-        index: true
+        default: false
     },
     isNew: {
         type: Boolean,

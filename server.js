@@ -5,6 +5,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const compression = require('compression');
 const rateLimit = require('express-rate-limit');
+const path = require('path');
 require('dotenv').config();
 
 // Import routes
@@ -47,14 +48,26 @@ app.use(limiter);
 app.use(compression());
 app.use(morgan('combined'));
 app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    origin: [
+        'http://localhost:3000',
+        'http://localhost:5000', 
+        'https://coffenoirdat.onrender.com',
+        process.env.FRONTEND_URL
+    ].filter(Boolean),
     credentials: true
 }));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Static files
+// Static files for uploads
 app.use('/uploads', express.static('uploads'));
+
+// Serve static frontend files (CSS, JS, Images)
+app.use('/css', express.static('css'));
+app.use('/js', express.static('js'));
+app.use('/img', express.static('img'));
+app.use('/lib', express.static('lib'));
+app.use('/mail', express.static('mail'));
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -74,8 +87,8 @@ app.use('/api/points', pointsRoutes);
 app.use('/api/orders', ordersRoutes);
 app.use('/api/products', productsRoutes);
 
-// Welcome endpoint
-app.get('/', (req, res) => {
+// API info endpoint (moved from root to preserve API access)
+app.get('/api', (req, res) => {
     res.json({
         message: 'مرحباً بك في واجهة برمجة التطبيقات الخاصة بمقهى نوار! ☕',
         description: 'Noir Café Backend API - نظام إدارة مقهى متكامل',
@@ -90,6 +103,67 @@ app.get('/', (req, res) => {
         },
         documentation: 'https://docs.noir-cafe.com'
     });
+});
+
+// Serve HTML pages
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+app.get('/menu', (req, res) => {
+    res.sendFile(path.join(__dirname, 'menu.html'));
+});
+
+app.get('/points', (req, res) => {
+    res.sendFile(path.join(__dirname, 'points.html'));
+});
+
+app.get('/profile', (req, res) => {
+    res.sendFile(path.join(__dirname, 'profile.html'));
+});
+
+app.get('/cardpay', (req, res) => {
+    res.sendFile(path.join(__dirname, 'cardpay.html'));
+});
+
+app.get('/hot-drinks', (req, res) => {
+    res.sendFile(path.join(__dirname, 'hot-drinks.html'));
+});
+
+app.get('/cold-drinks', (req, res) => {
+    res.sendFile(path.join(__dirname, 'cold-drinks.html'));
+});
+
+app.get('/desserts', (req, res) => {
+    res.sendFile(path.join(__dirname, 'desserts.html'));
+});
+
+app.get('/about', (req, res) => {
+    res.sendFile(path.join(__dirname, 'about.html'));
+});
+
+app.get('/contact', (req, res) => {
+    res.sendFile(path.join(__dirname, 'contact.html'));
+});
+
+app.get('/service', (req, res) => {
+    res.sendFile(path.join(__dirname, 'service.html'));
+});
+
+app.get('/menucart', (req, res) => {
+    res.sendFile(path.join(__dirname, 'menucart.html'));
+});
+
+app.get('/test-points', (req, res) => {
+    res.sendFile(path.join(__dirname, 'test-points.html'));
+});
+
+app.get('/testimonial', (req, res) => {
+    res.sendFile(path.join(__dirname, 'testimonial.html'));
+});
+
+app.get('/reservation', (req, res) => {
+    res.sendFile(path.join(__dirname, 'reservation.html'));
 });
 
 // Error handling middleware
@@ -114,10 +188,11 @@ app.use('*', (req, res) => {
 });
 
 // Database connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/noir-cafe', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
+const MONGODB_URI = process.env.MONGODB_URI || 
+    process.env.DATABASE_URL || 
+    'mongodb+srv://testdevices123qq_db_user:Q8dZE807gKe06dFB@cluster0.kwjeufv.mongodb.net/noir-cafe?retryWrites=true&w=majority';
+
+mongoose.connect(MONGODB_URI)
 .then(() => {
     console.log('✅ تم الاتصال بقاعدة البيانات بنجاح');
     console.log('🎯 Database: MongoDB connected successfully');
