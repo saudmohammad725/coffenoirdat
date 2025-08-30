@@ -28,7 +28,7 @@ app.use(helmet({
             scriptSrc: ["'self'", "'unsafe-inline'", "https://www.gstatic.com", "https://code.jquery.com", "https://stackpath.bootstrapcdn.com", "https://apis.google.com", "https://accounts.google.com", "https://www.googletagmanager.com"],
             scriptSrcAttr: ["'unsafe-inline'"],
             imgSrc: ["'self'", "data:", "https:"],
-            connectSrc: ["'self'", "https://coffeenoir-1fe6b.firebaseapp.com", "https://identitytoolkit.googleapis.com", "https://www.googleapis.com", "https://securetoken.googleapis.com", "https://firebase.googleapis.com", "https://firebaseinstallations.googleapis.com"],
+            connectSrc: ["'self'", "https://coffeenoir-1fe6b.firebaseapp.com", "https://identitytoolkit.googleapis.com", "https://www.googleapis.com", "https://securetoken.googleapis.com", "https://firebase.googleapis.com", "https://firebaseinstallations.googleapis.com", "https://accounts.google.com"],
             frameSrc: ["'self'", "https://accounts.google.com", "https://coffeenoir-1fe6b.firebaseapp.com"]
         }
     }

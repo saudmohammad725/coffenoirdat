@@ -433,45 +433,26 @@
     <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
     <script src="js/main.js"></script>
 
-    <!-- Firebase Auth Scripts -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
+    <!-- Firebase Auth Scripts - Using v8 consistently -->
+    <!-- Firebase is already loaded at the top of the page -->
     
-    <!-- Firebase Config -->
+    <!-- Google Auth Provider Setup -->
     <script>
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyDBlGaghNVTvLXiykCaIrTszEVuHd5TG4U",
-            authDomain: "coffeenoir-1fe6b.firebaseapp.com",
-            projectId: "coffeenoir-1fe6b",
-            storageBucket: "coffeenoir-1fe6b.firebasestorage.app",
-            messagingSenderId: "846057487909",
-            appId: "1:846057487909:web:37490e1ef5d53ebc4989cc",
-            measurementId: "G-4XB0L1T0XM"
-        };
-
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        
-        // Initialize services
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-        const analytics = firebase.analytics();
-        
-        // Initialize OAuth providers
+        // Firebase is already initialized at the top - just configure Google Provider
         const googleProvider = new firebase.auth.GoogleAuthProvider();
         
         // Current user state
         let currentUser = null;
         
-        // Configure Google provider
+        // Configure Google provider for better UX
         googleProvider.addScope('profile');
         googleProvider.addScope('email');
         googleProvider.setCustomParameters({
-            'login_hint': 'user@example.com'
+            'login_hint': 'user@example.com',
+            'prompt': 'select_account'
         });
+        
+        console.log('✅ Google Auth Provider configured');
     </script>
 
     <!-- Profile Page JavaScript -->
@@ -840,6 +821,12 @@
                     return;
                 }
                 
+                if (typeof googleProvider === 'undefined') {
+                    console.error('❌ Google Provider not configured');
+                    alert('خطأ: مقدم خدمة Google غير مُعد. يرجى إعادة تحميل الصفحة.');
+                    return;
+                }
+                
                 // إظهار loading على الزر
                 const loginButton = event?.target;
                 if (loginButton) {
@@ -848,29 +835,24 @@
                 }
                 
                 console.log('🔐 Starting Google popup...');
+                
+                // محاولة تسجيل الدخول
                 const result = await auth.signInWithPopup(googleProvider);
                 const user = result.user;
                 
-                console.log('Google sign in successful:', user.displayName);
+                console.log('✅ Google sign in successful:', user.displayName);
                 
                 // إغلاق الـ modal بشكل صحيح
                 $('#loginModal').modal('hide');
                 
-                // انتظار إغلاق الـ modal تماماً
-                $('#loginModal').on('hidden.bs.modal', function() {
-                    // Log analytics event (في الخلفية)
-                analytics.logEvent('login', {
-                    method: 'google'
-                    }).catch(error => console.log('Analytics failed:', error));
-                    
-                    // Refresh تلقائي بعد إغلاق الـ modal
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 300);
-                });
+                // انتظار قليل ثم reload
+                setTimeout(() => {
+                    console.log('🔄 Reloading page after successful login...');
+                    window.location.reload();
+                }, 500);
                 
             } catch (error) {
-                console.error('Google sign in error:', error);
+                console.error('❌ Google sign in error:', error);
                 
                 // إعادة تفعيل الزر
                 const loginButton = event?.target;
@@ -879,15 +861,19 @@
                     loginButton.innerHTML = '<i class="fab fa-google mr-2"></i>تسجيل الدخول بواسطة Google';
                 }
                 
-                // لا نظهر أي رسائل خطأ، فقط نسجل في الكونسول
-                // في حالة الإلغاء أو الأخطاء البسيطة، لا نفعل شيء
-                if (error.code === 'auth/popup-closed-by-user' || 
-                    error.code === 'auth/cancelled-popup-request') {
-                    return; // لا نفعل شيء للإلغاء
+                // معالجة الأخطاء
+                if (error.code === 'auth/popup-closed-by-user') {
+                    console.log('👤 User closed popup - no action needed');
+                    return;
+                } else if (error.code === 'auth/cancelled-popup-request') {
+                    console.log('🚫 Popup request cancelled - no action needed'); 
+                    return;
+                } else if (error.code === 'auth/popup-blocked') {
+                    alert('تم حظر النافذة المنبثقة. يرجى السماح للنوافذ المنبثقة وإعادة المحاولة.');
+                } else {
+                    console.log('🔍 Other error:', error.code, error.message);
+                    alert('حدث خطأ في تسجيل الدخول. يرجى المحاولة مرة أخرى.');
                 }
-                
-                // للأخطاء الأخرى، نسجل فقط في الكونسول
-                console.log('Login failed, but no user notification shown');
             }
         }
 
