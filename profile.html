@@ -436,23 +436,31 @@
     <!-- Firebase Auth Scripts - Using v8 consistently -->
     <!-- Firebase is already loaded at the top of the page -->
     
-    <!-- Google Auth Provider Setup -->
+    <!-- Initialize Firebase Auth and Google Provider -->
     <script>
-        // Firebase is already initialized at the top - just configure Google Provider
-        const googleProvider = new firebase.auth.GoogleAuthProvider();
+        // Initialize Firebase services (using the config from top of page)
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const analytics = firebase.analytics();
         
+        // Initialize Google Auth Provider
+        const googleProvider = new firebase.auth.GoogleAuthProvider();
+        googleProvider.addScope('email');
+        googleProvider.addScope('profile');
+        googleProvider.setCustomParameters({
+            prompt: 'select_account'
+        });
+        
+        console.log('✅ Firebase Auth initialized:', typeof auth);
+        console.log('✅ Google Provider initialized:', typeof googleProvider);
+    </script>
+    
+    <!-- Profile Page Variables -->
+    <script>
         // Current user state
         let currentUser = null;
         
-        // Configure Google provider for better UX
-        googleProvider.addScope('profile');
-        googleProvider.addScope('email');
-        googleProvider.setCustomParameters({
-            'login_hint': 'user@example.com',
-            'prompt': 'select_account'
-        });
-        
-        console.log('✅ Google Auth Provider configured');
+        console.log('✅ Profile page variables initialized');
     </script>
 
     <!-- Profile Page JavaScript -->
