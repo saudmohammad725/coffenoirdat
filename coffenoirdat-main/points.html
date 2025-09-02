@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="utf-8">
+    <title>Noir Café</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Points Packages" name="keywords">
+    <meta content="Points Packages" name="description">
+
+    <!-- Sentry Error Monitoring -->
+    <script
+      src="https://js.sentry-cdn.com/05aba6f8208a887ef8880e277cee0c6e.min.js"
+      crossorigin="anonymous"
+    ></script>
+    
+    <!-- Firebase v8 SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    
+    <!-- Firebase Configuration -->
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDBlGaghNVTvLXiykCaIrTszEVuHd5TG4U",
+            authDomain: "coffeenoir-1fe6b.firebaseapp.com",
+            projectId: "coffeenoir-1fe6b",
+            storageBucket: "coffeenoir-1fe6b.firebasestorage.app",
+            messagingSenderId: "846057487909",
+            appId: "1:846057487909:web:37490e1ef5d53ebc4989cc",
+            measurementId: "G-4XB0L1T0XM"
+        };
+        
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        
+        // Initialize services
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+    </script>
+
+    <link href="img/favicon.ico" rel="icon">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+    <link href="css/style.min.css" rel="stylesheet">
+    <style>
+      body{font-family:'Tajawal','Roboto','Montserrat',sans-serif}
+      /* اجعل الأقسام تحت الهيدر بيضاء، وابقِ الهيدر بخلفية القهوة */
+      .offer { background: #ffffff !important; background-image: none !important; }
+      .points-plain { 
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 25%, #ffffff 50%, #f1f3f4 75%, #ffffff 100%) !important;
+        background-size: 400% 400% !important;
+        animation: gradientMove 8s ease-in-out infinite !important;
+        position: relative !important;
+      }
+      .points-plain::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at 20% 30%, rgba(218,159,91,0.08) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 70%, rgba(51,33,29,0.05) 0%, transparent 50%),
+                    radial-gradient(circle at 40% 80%, rgba(218,159,91,0.06) 0%, transparent 50%);
+        pointer-events: none;
+        z-index: 0;
+      }
+      .points-plain > .container {
+        position: relative;
+        z-index: 1;
+      }
+      @keyframes gradientMove {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+      /* بطاقات باقات النقاط بشكل أجمل - تصميم محسن */
+      .package-card { 
+        background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%); 
+        border-radius: 20px; 
+        border: 1px solid rgba(218,159,91,0.25); 
+        box-shadow: 0 12px 30px rgba(0,0,0,0.08), 0 6px 20px rgba(218,159,91,0.12); 
+        overflow: hidden; 
+        transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        position: relative;
+        cursor: pointer;
+        user-select: none;
+        height: 100%;
+      }
+      
+      .package-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(218,159,91,0.06), transparent 60%);
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        z-index: 1;
+      }
+      
+      .package-card::after {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: linear-gradient(135deg, rgba(218,159,91,0.4), rgba(244,192,136,0.2), rgba(218,159,91,0.4));
+        border-radius: 20px;
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+      }
+      
+      .package-card:hover::before {
+        opacity: 1;
+      }
+      
+      .package-card:hover::after {
+        opacity: 1;
+      }
+      
+      .package-card:hover { 
+        transform: translateY(-10px) scale(1.03); 
+        box-shadow: 0 25px 50px rgba(0,0,0,0.15), 0 12px 30px rgba(218,159,91,0.25);
+        border-color: rgba(218,159,91,0.5);
+      }
+      
+      .package-card:active, .package-card.active {
+        transform: translateY(-5px) scale(0.99);
+        transition: all 0.1s ease;
+      }
+      
+      .package-card .btn {
+        pointer-events: none;
+        transition: all 0.3s ease;
+        background: linear-gradient(135deg, #DA9F5B, #f4c088);
+        border: none;
+        border-radius: 15px;
+        padding: 12px 20px;
+        font-weight: 700;
+        box-shadow: 0 6px 20px rgba(218,159,91,0.3);
+      }
+      
+      .package-card:hover .btn {
+        background: linear-gradient(135deg, #c8935a, #da9f5b);
+        transform: scale(1.05);
+        box-shadow: 0 8px 25px rgba(218,159,91,0.4);
+      }
+      
+      .package-card:active .btn, .package-card.active .btn {
+        transform: scale(0.95);
+      }
+      .package-media { 
+        position: relative; 
+        height: 180px; 
+        background: linear-gradient(135deg, #DA9F5B, #f4c088); 
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        display: flex; 
+        align-items: center; 
+        justify-content: center;
+        border-radius: 20px 20px 0 0;
+        overflow: hidden;
+      }
+      
+      .package-media::before { 
+        content: ""; 
+        position: absolute; 
+        inset: 0; 
+        background: linear-gradient(135deg, rgba(218,159,91,0.1), rgba(51,33,29,0.1)); 
+        transition: opacity 0.3s ease;
+      }
+      
+      .package-card:hover .package-media::before {
+        background: linear-gradient(135deg, rgba(218,159,91,0.2), rgba(51,33,29,0.2)); 
+      }
+      
+      .package-media::after { 
+        content: ""; 
+        position: absolute; 
+        inset: 0; 
+        background: linear-gradient(to bottom, transparent 30%, rgba(0,0,0,0.1) 100%); 
+      }
+      
+      .media-label { 
+        position: absolute; 
+        z-index: 3; 
+        bottom: 15px;
+        left: 0;
+        right: 0;
+        text-align: center; 
+        color: #fff; 
+        font-weight: 800; 
+        font-size: 28px; 
+        letter-spacing: 1px; 
+        text-shadow: 
+          0 2px 8px rgba(0,0,0,0.5),
+          0 4px 16px rgba(0,0,0,0.3);
+        transition: all 0.3s ease;
+      }
+      
+      .package-card:hover .media-label {
+        transform: scale(1.05);
+        text-shadow: 
+          0 3px 12px rgba(0,0,0,0.6),
+          0 6px 20px rgba(0,0,0,0.4);
+      }
+      .package-body { 
+        padding: 25px 20px 30px; 
+        position: relative;
+        z-index: 2;
+      }
+      
+      .package-price { 
+        font-size: 20px; 
+        color: #33211D; 
+        margin-bottom: 15px; 
+        font-weight: 800;
+        text-align: center;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+      }
+      
+      .package-card:hover .package-price {
+        color: #DA9F5B;
+        transform: scale(1.05);
+      }
+      
+      .package-cta .btn { 
+        border-radius: 15px; 
+        padding: 12px 20px; 
+        width: 100%;
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+      }
+      .badge-ribbon { 
+        position: absolute; 
+        top: 15px; 
+        right: 15px; 
+        background: linear-gradient(135deg, #33211D, #4a302a); 
+        color: #fff; 
+        padding: 8px 14px; 
+        border-radius: 25px; 
+        font-size: 11px; 
+        font-weight: 700;
+        z-index: 4; 
+        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        transition: all 0.3s ease;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+      }
+      
+      .package-card:hover .badge-ribbon {
+        transform: scale(1.05);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      }
+      
+      .badge-ribbon.badge-gold { 
+        background: linear-gradient(135deg, #DA9F5B, #f4c088); 
+        color: #33211D; 
+        font-weight: 800; 
+        box-shadow: 0 8px 20px rgba(218,159,91,0.4);
+      }
+      
+      .badge-ribbon.badge-green { 
+        background: linear-gradient(135deg, #28a745, #34ce57); 
+        box-shadow: 0 8px 20px rgba(40,167,69,0.4);
+      }
+      
+      .badge-ribbon.badge-blue { 
+        background: linear-gradient(135deg, #007bff, #3395ff); 
+        box-shadow: 0 8px 20px rgba(0,123,255,0.4);
+      }
+      
+      .badge-ribbon.badge-red { 
+        background: linear-gradient(135deg, #dc3545, #e85463); 
+        box-shadow: 0 8px 20px rgba(220,53,69,0.4);
+      }
+      /* ثبات حجم البطاقات على جميع الشاشات */
+
+      /* Modal offer refined */
+      .modal-offer{background:#fff; border:1px solid #DA9F5B; box-shadow:0 20px 48px rgba(0,0,0,.2)}
+      .modal-offer .offer-brand{background:linear-gradient(90deg,#33211D,#4a302a); color:#fff; position:relative}
+      .modal-offer .brand-title{font-weight:800; letter-spacing:.5px; font-size:1.25rem}
+      .modal-offer .offer-close{position:absolute; right:10px; top:8px; color:#fff; background:transparent; border:0; font-size:1.5rem; line-height:1}
+      .modal-offer .headline{font-weight:800; color:#33211D}
+      .modal-offer .subline{color:#555}
+      /* Promo cards (عروض النقاط الخاصة) - تصميم محسن */
+      .promo-card { 
+        background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%); 
+        border: 1px solid rgba(218,159,91,0.3); 
+        border-radius: 20px; 
+        box-shadow: 0 15px 35px rgba(0,0,0,0.08), 0 5px 15px rgba(218,159,91,0.1); 
+        padding: 30px 25px; 
+        height: 100%; 
+        transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); 
+        text-align: center; 
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+      }
+      
+      .promo-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(218,159,91,0.05), transparent);
+        opacity: 0;
+        transition: opacity 0.4s ease;
+      }
+      
+      .promo-card:hover::before {
+        opacity: 1;
+      }
+      
+      .promo-card:hover { 
+        transform: translateY(-12px) scale(1.02); 
+        box-shadow: 0 25px 50px rgba(0,0,0,0.15), 0 10px 25px rgba(218,159,91,0.2);
+        border-color: rgba(218,159,91,0.5);
+      }
+      
+      .promo-icon { 
+        width: 70px; 
+        height: 70px; 
+        border-radius: 50%; 
+        display: inline-flex; 
+        align-items: center; 
+        justify-content: center; 
+        background: linear-gradient(135deg, #DA9F5B 0%, #f4c088 100%); 
+        color: #33211D; 
+        margin-bottom: 20px; 
+        font-size: 26px; 
+        box-shadow: 0 8px 25px rgba(218,159,91,0.3);
+        transition: all 0.3s ease;
+        position: relative;
+        z-index: 2;
+      }
+      
+      .promo-card:hover .promo-icon {
+        transform: scale(1.15) rotate(5deg);
+        box-shadow: 0 12px 35px rgba(218,159,91,0.4);
+      }
+      
+      .promo-main { 
+        font-size: 22px; 
+        font-weight: 800; 
+        color: #33211D; 
+        margin-bottom: 12px; 
+        position: relative;
+        z-index: 2;
+        transition: all 0.3s ease;
+      }
+      
+      .promo-card:hover .promo-main {
+        color: #DA9F5B;
+        transform: scale(1.05);
+      }
+      
+      .promo-bonus { 
+        color: #666; 
+        margin-bottom: 15px; 
+        font-size: 15px;
+        line-height: 1.4;
+        position: relative;
+        z-index: 2;
+      }
+      
+      .promo-badge { 
+        display: inline-block; 
+        background: linear-gradient(135deg, #33211D, #4a302a); 
+        color: #fff; 
+        border-radius: 25px; 
+        padding: 8px 16px; 
+        font-size: 12px; 
+        font-weight: 600;
+        box-shadow: 0 4px 15px rgba(51,33,29,0.3);
+        transition: all 0.3s ease;
+        position: relative;
+        z-index: 2;
+      }
+      
+      .promo-card:hover .promo-badge {
+        background: linear-gradient(135deg, #DA9F5B, #f4c088);
+        color: #33211D;
+        transform: scale(1.05);
+      }
+      /* (تمت إزالة الخط الفاصل) */
+      
+      /* Floating Cart Button */
+      .floating-cart {
+          position: fixed;
+          bottom: 30px;
+          left: 30px;
+          width: 60px;
+          height: 60px;
+          background: linear-gradient(135deg, #DA9F5B, #f4c088);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 24px;
+          color: #33211D;
+          cursor: pointer;
+          z-index: 9999;
+          box-shadow: 0 8px 25px rgba(218,159,91,0.4), 0 4px 15px rgba(0,0,0,0.2);
+          transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+      }
+      
+      .floating-cart:hover {
+          transform: scale(1.1) translateY(-3px);
+          box-shadow: 0 12px 35px rgba(218,159,91,0.5), 0 6px 20px rgba(0,0,0,0.3);
+      }
+      
+      .cart-count {
+          position: absolute;
+          top: -5px;
+          right: -5px;
+          background: #dc3545;
+          color: white;
+          border-radius: 50%;
+          width: 24px;
+          height: 24px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 12px;
+          font-weight: bold;
+          min-width: 24px;
+          border: 2px solid white;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      }
+      
+      .cart-count.hidden {
+          display: none;
+      }
+      
+      /* Cart Animation */
+      .cart-item-flying {
+          position: fixed;
+          z-index: 10000;
+          pointer-events: none;
+          width: 60px;
+          height: 60px;
+          background: linear-gradient(135deg, #DA9F5B, #f4c088);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-weight: bold;
+          box-shadow: 0 4px 15px rgba(218,159,91,0.6);
+          transform-origin: center;
+          animation: flyingPulse 1s infinite ease-in-out;
+          font-size: 20px;
+          text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+          border: 2px solid rgba(255,255,255,0.8);
+      }
+      
+      @keyframes flyingPulse {
+          0%, 100% {
+              transform: scale(1);
+              box-shadow: 0 4px 15px rgba(218,159,91,0.6);
+          }
+          50% {
+              transform: scale(1.1);
+              box-shadow: 0 6px 25px rgba(218,159,91,0.8);
+          }
+      }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar Start -->
+    <div class="container-fluid p-0 nav-bar">
+        <nav class="navbar navbar-expand-lg bg-none navbar-dark py-3">
+            <a href="index.html" class="navbar-brand px-lg-4 m-0">
+                <h2 class="m-0 text-uppercase text-white font-weight-bold" style="font-size: 2rem;">Noir Café</h2>
+            </a>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                <div class="navbar-nav ml-auto p-4">
+                    <a href="index.html" class="nav-item nav-link">الرئيسية</a>
+                    <a href="about.html" class="nav-item nav-link">من نحن</a>
+                    <a href="service.html" class="nav-item nav-link">الخدمات</a>
+                    <a href="menu.html" class="nav-item nav-link">القائمة</a>
+                    <a href="profile.html" class="nav-item nav-link">الملف الشخصي</a>
+                    <a href="contact.html" class="nav-item nav-link">تواصل معنا</a>
+                    
+                    <!-- User Points Display in Navbar -->
+                    <div class="nav-item d-flex align-items-center mr-3" style="background: linear-gradient(135deg, rgba(218,159,91,0.2), rgba(51,33,29,0.1)); border-radius: 20px; padding: 6px 12px; border: 1px solid rgba(218,159,91,0.3); cursor: pointer;" onclick="window.location.href='points.html'" title="رصيد النقاط - اضغط للشراء">
+                        <i class="fa fa-coins mr-3" style="color: #DA9F5B;"></i>
+                        <span class="text-white font-weight-bold" id="navUserPointsDisplay">0</span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!-- Navbar End -->
+
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header mb-5 position-relative overlay-bottom">
+        <div class="d-flex flex-column align-items-center justify-content-center pt-0 pt-lg-5" style="min-height: 400px">
+            <h1 class="display-4 mb-3 mt-0 mt-lg-5 text-white text-uppercase">باقات النقاط</h1>
+            <div class="d-inline-flex mb-lg-5">
+                <p class="m-0 text-white"><a class="text-white" href="index.html">الرئيسية</a></p>
+                <p class="m-0 text-white px-2">/</p>
+                <p class="m-0 text-white">باقات النقاط</p>
+            </div>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+    <!-- Modal: Special Offer -->
+    <div class="modal fade" id="specialOfferModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content modal-offer" style="border-radius:16px; overflow:hidden">
+          <div class="offer-brand p-3 text-center">
+            <div class="brand-title">Noir Café</div>
+            <button type="button" class="offer-close" data-dismiss="modal" aria-label="Close">&times;</button>
+          </div>
+          <div class="p-4 text-center">
+            <div class="promo-icon mb-3" style="width:64px;height:64px"><i class="fa fa-gift"></i></div>
+            <div class="headline h5 mb-2">عرض خاص لك!</div>
+            <div class="subline mb-3">اشترِ 300 نقطة واحصل على <span class="text-primary font-weight-bold">35</span> نقطة مجاناً</div>
+            <div class="d-flex justify-content-between mt-3">
+              <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">تخطي</button>
+              <a href="#pkg-300" class="btn btn-primary" id="viewOfferBtn">مشاهدة</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Promo Offer Start -->
+    <div class="offer container-fluid my-5 py-5 text-center position-relative">
+        <div class="container py-5">
+            <h1 class="mb-4 text-secondary">عروض النقاط الخاصة</h1>
+            <div class="row">
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="promo-card border-0" style="box-shadow:0 14px 36px rgba(218,159,91,.35)">
+                        <div class="promo-icon"><i class="fa fa-gift"></i></div>
+                        <div class="promo-main">اشترِ 100 نقطة</div>
+                        <div class="promo-bonus">واحصل على <span class="text-primary font-weight-bold">20</span> نقطة مجاناً</div>
+                        <span class="promo-badge">عرض مميز</span>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="promo-card border-0" style="box-shadow:0 14px 36px rgba(218,159,91,.35)">
+                        <div class="promo-icon"><i class="fa fa-percentage"></i></div>
+                        <div class="promo-main">اشترِ 300 نقطة</div>
+                        <div class="promo-bonus">واحصل على <span class="text-primary font-weight-bold">35</span> نقطة مجاناً</div>
+                        <span class="promo-badge">وفر أكثر</span>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="promo-card border-0" style="box-shadow:0 14px 36px rgba(218,159,91,.35)">
+                        <div class="promo-icon"><i class="fa fa-star"></i></div>
+                        <div class="promo-main">اشترِ 500 نقطة</div>
+                        <div class="promo-bonus">واحصل على <span class="text-primary font-weight-bold">50</span> نقطة مجاناً</div>
+                        <span class="promo-badge">الأكثر طلباً</span>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="promo-card border-0" style="box-shadow:0 14px 36px rgba(218,159,91,.35)">
+                        <div class="promo-icon"><i class="fa fa-crown"></i></div>
+                        <div class="promo-main">اشترِ 1000 نقطة</div>
+                        <div class="promo-bonus">واحصل على <span class="text-primary font-weight-bold">100</span> نقطة مجاناً</div>
+                        <span class="promo-badge">أفضل قيمة</span>
+                    </div>
+                </div>
+            </div>
+            <p class="mt-4 mb-0" style="color:#33211D; font-weight:700; letter-spacing:.2px">النقاط يمكنك استبدالها بأي مشروب بارد أو ساخن أو حلى</p>
+        </div>
+    </div>
+    <!-- Promo Offer End -->
+
+    <!-- Packages Start -->
+    <div class="container-fluid pt-5 points-plain">
+        <div class="container">
+            
+            <div class="section-title">
+                <h4 class="text-primary text-uppercase" style="letter-spacing: 5px;">باقات النقاط</h4>
+                <h1 class="display-4">اختر الباقة المناسبة لك</h1>
+            </div>
+            <div class="row" id="packagesGrid"></div>
+        </div>
+    </div>
+    <!-- Packages End -->
+
+    <!-- Floating Cart Button -->
+    <div class="floating-cart" id="floatingCart" onclick="goToCart()">
+        <i class="fa fa-shopping-cart"></i>
+        <span class="cart-count hidden" id="cartCount">0</span>
+    </div>
+
+    <!-- Footer Start -->
+    <div class="container-fluid footer text-white mt-5 pt-5 px-0 position-relative overlay-top">
+        <div class="row mx-0 pt-5 px-sm-3 px-lg-5 mt-4">
+            <div class="col-lg-3 col-md-6 mb-5">
+                <h4 class="text-white text-uppercase mb-4" style="letter-spacing: 3px;">تواصل معنا</h4>
+                <p><i class="fa fa-map-marker-alt mr-2"></i>123 شارع مثال، نيويورك، الولايات المتحدة</p>
+                <p><i class="fa fa-phone-alt mr-2"></i>+012 345 67890</p>
+                <p class="m-0"><i class="fa fa-envelope mr-2"></i>info@example.com</p>
+                
+                <!-- User Points Display -->
+                <div class="mt-4 p-3" style="background: linear-gradient(135deg, rgba(218,159,91,0.15), rgba(51,33,29,0.1)); border-radius: 15px; border: 2px solid rgba(218,159,91,0.4); box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h6 class="text-white mb-0 font-weight-bold">
+                            <i class="fa fa-coins mr-3" style="color: #DA9F5B;"></i>
+                            رصيد النقاط
+                        </h6>
+                        <button onclick="window.location.href='points.html'" class="btn btn-sm" style="background: #DA9F5B; color: #33211D; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-weight: bold; border: none; transition: all 0.3s ease;" onmouseover="this.style.background='#f4c088'; this.style.transform='scale(1.1)'" onmouseout="this.style.background='#DA9F5B'; this.style.transform='scale(1)'">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <span class="h3 mb-0 font-weight-bold" style="color: #DA9F5B; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);" id="userPointsDisplay">0</span>
+                            <small class="text-white mr-2 font-weight-bold">نقطة</small>
+                        </div>
+                        <div class="text-right">
+                            <small class="text-white-50 d-block">آخر تحديث</small>
+                            <small class="text-white font-weight-bold" id="lastUpdateTime">الآن</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-5">
+                <h4 class="text-white text-uppercase mb-4" style="letter-spacing: 3px;">تابعنا</h4>
+                <p>تابع أحدث أخبارنا وعروضنا على منصات التواصل.</p>
+                <div class="d-flex justify-content-start">
+                    <a class="btn btn-lg btn-outline-light btn-lg-square mr-2" href="#"><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-lg btn-outline-light btn-lg-square mr-2" href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-lg btn-outline-light btn-lg-square mr-2" href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a class="btn btn-lg btn-outline-light btn-lg-square" href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-5">
+                <h4 class="text-white text-uppercase mb-4" style="letter-spacing: 3px;">ساعات العمل</h4>
+                <div>
+                    <h6 class="text-white text-uppercase">الاثنين - الجمعة</h6>
+                    <p>8:00 ص - 8:00 م</p>
+                    <h6 class="text-white text-uppercase">السبت - الأحد</h6>
+                    <p>2:00 م - 8:00 م</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-5">
+                <h4 class="text-white text-uppercase mb-4" style="letter-spacing: 3px;">النشرة البريدية</h4>
+                <p>اشترك ليصلك كل جديد من عروض وأخبار.</p>
+                <div class="w-100">
+                    <div class="input-group">
+                        <input type="text" class="form-control border-light" style="padding: 25px;" placeholder="بريدك الإلكتروني">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary font-weight-bold px-3">اشترك</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid text-center text-white border-top mt-4 py-4 px-sm-3 px-md-5" style="border-color: rgba(256, 256, 256, .1) !important;">
+            <p class="mb-2 text-white">جميع الحقوق محفوظه Saud حقوق النشر</p>
+            <p class="m-0 text-white">التصميم بواسطه Saudmohammad</p>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="lib/tempusdominus/js/moment.min.js"></script>
+    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+
+    <script>
+    $(function(){
+        const POINTS = [10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,250,300,350,400,450,500,550,600,650,700,750,800,850,900,950,1000];
+        const IMAGE_MAP = {
+            10: '10 (1).jpg',
+            20: '20 (1).jpg',
+            30: '30 (1).jpg',
+            40: '40 (1).jpg',
+            50: '50 (1).jpg',
+            60: '60 (1).jpg',
+            70: '70 (1).jpg',
+            80: '80 (1).jpg',
+            90: '90 (1).jpg',
+            100: '100 (1).jpg',
+            110: '110 (1).jpg',
+            120: '120 (1).jpg',
+            130: '130 (1).jpg',
+            140: '140.png',
+            150: '150.png',
+            160: '160 (2).png',
+            170: '170.png',
+            180: '180.png',
+            190: '190.png',
+            200: '200.png',
+            250: '250.png',
+            300: '300.png',
+            350: '350.png',
+            400: '400.png',
+            450: '450 (2).png',
+            500: '500 (2).png',
+            550: '550 (2).png',
+            600: '600.png',
+            650: '650.png',
+            700: '700.png',
+            750: '750.png',
+            800: '800.png',
+            850: '850.png',
+            900: '900.png',
+            950: '950.png',
+            1000: '1000.png'
+        };
+
+        const $grid = $('#packagesGrid');
+        POINTS.forEach((pts) => {
+            const price = pts; // 1 نقطة = 1 ريال
+            const ribbonClass = pts===1000 ? 'badge-gold' : pts===500 ? 'badge-red' : pts===300 ? 'badge-green' : pts===100 ? 'badge-blue' : '';
+            const ribbonText = pts===100 ? '20+ مجاناً' : pts===300 ? '35+ مجاناً' : pts===500 ? 'الأكثر طلباً' : pts===1000 ? 'أفضل قيمة' : '';
+            const ribbonHtml = ribbonText ? `<span class="badge-ribbon ${ribbonClass}">${ribbonText}</span>` : '';
+            const imgPath = IMAGE_MAP[pts] ? `img/${IMAGE_MAP[pts]}` : '';
+            const bgStyle = imgPath ? `style="background-image:url('${imgPath}')"` : '';
+                                        const card = `
+                <div class="col-sm-6 col-md-4 col-lg-3 mb-4 d-flex justify-content-center">
+                    <div class="package-card position-relative text-center" id="pkg-${pts}" style="width:200px; max-width:100%; cursor: pointer;" onclick="addToCart(this, ${pts}, ${price})" data-points="${pts}" data-price="${price}">
+                        ${ribbonHtml}
+                        <div class="package-media" ${bgStyle}></div>
+                        <div class="package-body">
+                            <div class="package-price">${price} ريال</div>
+                            <div class="package-cta">
+                                <div class="btn btn-primary font-weight-bold">اشتر الآن</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            $grid.append(card);
+        });
+        // افتح النافذة المنبثقة بعد تحميل الصفحة بقليل
+        setTimeout(() => { $('#specialOfferModal').modal('show'); }, 600);
+        // زر مشاهدة → سكرول إلى باقة 300
+        $('#viewOfferBtn').on('click', function(e){
+          e.preventDefault();
+          $('#specialOfferModal').modal('hide');
+          const $target = $('#pkg-300');
+          if($target.length){
+            $('html, body').animate({scrollTop: $target.offset().top - 100}, 700);
+          }
+        });
+        
+        // Cart System
+        let cartItems = [];
+        let cartCount = 0;
+        
+        // Update cart count display
+        function updateCartCount() {
+            const countElement = document.getElementById('cartCount');
+            if (cartCount > 0) {
+                countElement.textContent = cartCount;
+                countElement.classList.remove('hidden');
+            } else {
+                countElement.classList.add('hidden');
+            }
+        }
+        
+        // Add item to cart with animation
+        window.addToCart = function(element, points, price) {
+            // Check if user is logged in using Auth Manager
+            if (!authManager.isLoggedIn()) {
+                alert('يجب تسجيل الدخول أولاً لشراء النقاط!\nسيتم توجيهك إلى صفحة الملف الشخصي');
+                window.location.href = 'profile.html';
+                return;
+            }
+            
+            const user = authManager.getCurrentUser();
+            console.log('✅ User authenticated:', user.email);
+            
+            // Add active state to the card
+            element.classList.add('active');
+            
+            // Get the center position of the card for animation start
+            const rect = element.getBoundingClientRect();
+            const startX = rect.left + (rect.width / 2);
+            const startY = rect.top + (rect.height / 2);
+            
+            // Create flying animation element
+            const flyingItem = document.createElement('div');
+            flyingItem.className = 'cart-item-flying';
+            flyingItem.textContent = points;
+            
+            // Position the flying item at the center of the card
+            flyingItem.style.left = startX - 30 + 'px'; // 30 is half the width of flying item
+            flyingItem.style.top = startY - 30 + 'px'; // 30 is half the height of flying item
+            
+            document.body.appendChild(flyingItem);
+            
+            // Get cart position
+            const cart = document.getElementById('floatingCart');
+            const cartRect = cart.getBoundingClientRect();
+            
+            // Animate to cart
+            setTimeout(() => {
+                flyingItem.style.transition = 'all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                flyingItem.style.left = cartRect.left + 15 + 'px';
+                flyingItem.style.top = cartRect.top + 15 + 'px';
+                flyingItem.style.transform = 'scale(0.3)';
+                flyingItem.style.opacity = '0.8';
+            }, 100);
+            
+            // Add to cart and remove flying element
+            setTimeout(() => {
+                cartItems.push({
+                    points: points,
+                    price: price,
+                    id: Date.now()
+                });
+                cartCount++;
+                updateCartCount();
+                
+                // Cart bounce effect
+                cart.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    cart.style.transform = 'scale(1)';
+                }, 200);
+                
+                flyingItem.remove();
+                
+                // Remove active state from card
+                element.classList.remove('active');
+            }, 1300);
+        }
+        
+        // Go to cart page
+        window.goToCart = function() {
+            if (cartCount > 0) {
+                // Save cart to localStorage
+                localStorage.setItem('cartItems', JSON.stringify(cartItems));
+                localStorage.setItem('cartCount', cartCount);
+                window.location.href = 'cardpay.html';
+            } else {
+                alert('السلة فارغة! أضف بعض النقاط أولاً');
+            }
+        };
+        
+        // Initialize cart on page load
+        function initializeCart() {
+            const savedItems = localStorage.getItem('cartItems');
+            const savedCount = localStorage.getItem('cartCount');
+            
+            if (savedItems && savedCount) {
+                cartItems = JSON.parse(savedItems);
+                cartCount = parseInt(savedCount);
+                updateCartCount();
+            }
+        }
+        
+        // Initialize cart when page loads
+        initializeCart();
+        updatePointsDisplay();
+        
+        // Update points display
+        function updatePointsDisplay() {
+            if (window.pointsManager) {
+                window.pointsManager.updateAllDisplays();
+            }
+        }
+    });
+    </script>
+
+    <!-- Auth Manager -->
+    <script src="js/auth-manager.js"></script>
+    
+    <!-- Points Manager -->
+    <script src="js/points-manager.js"></script>
+    
+    <script src="js/main.js"></script>
+</body>
+
+</html>
+
+

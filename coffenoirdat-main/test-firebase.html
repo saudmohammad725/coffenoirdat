@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار Firebase</title>
+    
+    <!-- Firebase v8 SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js"></script>
+</head>
+<body>
+    <h1>اختبار Firebase</h1>
+    <div id="status"></div>
+    
+    <script>
+        const statusDiv = document.getElementById('status');
+        
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDBlGaghNVTvLXiykCaIrTszEVuHd5TG4U",
+            authDomain: "coffeenoir-1fe6b.firebaseapp.com",
+            projectId: "coffeenoir-1fe6b",
+            storageBucket: "coffeenoir-1fe6b.firebasestorage.app",
+            messagingSenderId: "846057487909",
+            appId: "1:846057487909:web:37490e1ef5d53ebc4989cc",
+            measurementId: "G-4XB0L1T0XM"
+        };
+
+        try {
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+            statusDiv.innerHTML += '<p>✅ Firebase initialized successfully</p>';
+            
+            // Initialize Firebase services
+            const auth = firebase.auth();
+            const db = firebase.firestore();
+            const analytics = firebase.analytics();
+            
+            statusDiv.innerHTML += '<p>✅ Firebase Auth: ' + typeof auth + '</p>';
+            statusDiv.innerHTML += '<p>✅ Firebase Firestore: ' + typeof db + '</p>';
+            statusDiv.innerHTML += '<p>✅ Firebase Analytics: ' + typeof analytics + '</p>';
+            
+            // Test auth state
+            auth.onAuthStateChanged((user) => {
+                if (user) {
+                    statusDiv.innerHTML += '<p>👤 User logged in: ' + user.email + '</p>';
+                } else {
+                    statusDiv.innerHTML += '<p>🚪 No user logged in</p>';
+                }
+            });
+            
+        } catch (error) {
+            statusDiv.innerHTML += '<p>❌ Error: ' + error.message + '</p>';
+            console.error('Firebase error:', error);
+        }
+    </script>
+</body>
+</html>
