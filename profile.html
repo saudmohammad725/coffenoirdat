@@ -26,6 +26,12 @@
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/style.min.css" rel="stylesheet">
     
+    <!-- Firebase v8 SDK - Load synchronously -->
+    <!-- MySQL Authentication System -->
+    <script src="js/mysql-auth.js"></script>
+    
+    <!-- MySQL Authentication System is loaded above -->
+    
     <style>
         body{font-family:'Tajawal','Roboto','Montserrat',sans-serif}
         
@@ -340,28 +346,124 @@
                     </button>
                 </div>
                 <div class="modal-body p-4">
-                    <div class="text-center">
-                        <!-- Google Sign In -->
-                        <button class="btn btn-danger btn-block btn-lg mb-3 social-btn" onclick="signInWithGoogle(event)">
-                            <i class="fab fa-google mr-2"></i>
-                            تسجيل الدخول بواسطة Google
-                        </button>
-                        
-                        <hr class="my-4">
-                        
-                        <!-- Information Section -->
+                    <!-- Login/Register Tabs -->
+                    <ul class="nav nav-pills nav-justified mb-4" id="authTabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="login-tab" data-toggle="pill" href="#login-content">تسجيل الدخول</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="register-tab" data-toggle="pill" href="#register-content">حساب جديد</a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <!-- Login Tab -->
+                        <div class="tab-pane fade show active" id="login-content">
+                            <!-- Email/Password Login Form -->
+                            <form id="loginForm" onsubmit="signInWithEmail(event)">
+                                <div class="form-group">
+                                    <label for="loginEmail">البريد الإلكتروني</label>
+                                    <input type="email" class="form-control" id="loginEmail" required placeholder="example@gmail.com">
+                                </div>
+                                <div class="form-group">
+                                    <label for="loginPassword">كلمة المرور</label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="loginPassword" required placeholder="••••••••">
+                                        <div class="input-group-append">
+                                            <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('loginPassword')">
+                                                <i class="fa fa-eye"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block btn-lg mb-3">
+                                    <i class="fa fa-sign-in-alt mr-2"></i>
+                                    تسجيل الدخول
+                                </button>
+                            </form>
+
+                            <div class="text-center mb-3">
+                                <button class="btn btn-link text-primary p-0" onclick="showForgotPassword()">
+                                    نسيت كلمة المرور؟
+                                </button>
+                            </div>
+
+                            <div class="text-center mb-3">
+                                <small class="text-muted">أو</small>
+                            </div>
+
+                            <!-- Google Sign In -->
+                            <button class="btn btn-danger btn-block btn-lg mb-3 social-btn" onclick="signInWithGoogle(event)">
+                                <i class="fab fa-google mr-2"></i>
+                                تسجيل الدخول بواسطة Google
+                            </button>
+                        </div>
+
+                        <!-- Register Tab -->
+                        <div class="tab-pane fade" id="register-content">
+                            <!-- Registration Form -->
+                            <form id="registerForm" onsubmit="registerWithEmail(event)">
+                                <div class="form-group">
+                                    <label for="registerName">الاسم الكامل</label>
+                                    <input type="text" class="form-control" id="registerName" required placeholder="أحمد محمد">
+                                </div>
+                                <div class="form-group">
+                                    <label for="registerEmail">البريد الإلكتروني</label>
+                                    <input type="email" class="form-control" id="registerEmail" required placeholder="example@gmail.com">
+                                </div>
+                                <div class="form-group">
+                                    <label for="registerPassword">كلمة المرور</label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="registerPassword" required placeholder="••••••••" minlength="6">
+                                        <div class="input-group-append">
+                                            <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('registerPassword')">
+                                                <i class="fa fa-eye"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <small class="text-muted">يجب أن تكون 6 أحرف على الأقل</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="confirmPassword">تأكيد كلمة المرور</label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="confirmPassword" required placeholder="••••••••">
+                                        <div class="input-group-append">
+                                            <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('confirmPassword')">
+                                                <i class="fa fa-eye"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input type="checkbox" class="form-check-input" id="agreeTerms" required>
+                                    <label class="form-check-label" for="agreeTerms">
+                                        أوافق على <a href="#" class="text-primary">شروط الاستخدام</a> و <a href="#" class="text-primary">سياسة الخصوصية</a>
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-success btn-block btn-lg mb-3">
+                                    <i class="fa fa-user-plus mr-2"></i>
+                                    إنشاء حساب جديد
+                                </button>
+                            </form>
+
+                            <div class="text-center mb-3">
+                                <small class="text-muted">أو</small>
+                            </div>
+
+                            <!-- Google Sign Up -->
+                            <button class="btn btn-danger btn-block btn-lg social-btn" onclick="signInWithGoogle(event)">
+                                <i class="fab fa-google mr-2"></i>
+                                إنشاء حساب بواسطة Google
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Information Section -->
+                    <div class="text-center mt-4">
                         <div class="text-muted small">
                             <p class="mb-2"><i class="fa fa-shield-alt text-success"></i> تسجيل الدخول آمن ومحمي</p>
                             <p class="mb-2"><i class="fa fa-user-check text-primary"></i> لن نقوم بنشر أي شيء على حسابك</p>
                             <p class="mb-0"><i class="fa fa-lock text-warning"></i> نحن نحترم خصوصيتك تماماً</p>
-                        </div>
-                        
-                        <div class="mt-4 text-center">
-                            <small class="text-muted">
-                                بتسجيل الدخول، فإنك توافق على 
-                                <a href="#" class="text-primary">شروط الاستخدام</a> و 
-                                <a href="#" class="text-primary">سياسة الخصوصية</a>
-                            </small>
                         </div>
                     </div>
                 </div>
@@ -369,7 +471,39 @@
         </div>
     </div>
 
-
+    <!-- Forgot Password Modal -->
+    <div class="modal fade login-modal" id="forgotPasswordModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="login-header">
+                    <h3><i class="fa fa-key"></i> إعادة تعيين كلمة المرور</h3>
+                    <p class="mb-0">أدخل بريدك الإلكتروني لإرسال رابط إعادة التعيين</p>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="forgotPasswordForm" onsubmit="sendPasswordReset(event)">
+                        <div class="form-group">
+                            <label for="resetEmail">البريد الإلكتروني</label>
+                            <input type="email" class="form-control" id="resetEmail" required placeholder="example@gmail.com">
+                        </div>
+                        <button type="submit" class="btn btn-warning btn-block btn-lg mb-3">
+                            <i class="fa fa-paper-plane mr-2"></i>
+                            إرسال رابط إعادة التعيين
+                        </button>
+                    </form>
+                    
+                    <div class="text-center">
+                        <button class="btn btn-link text-primary" onclick="backToLogin()">
+                            <i class="fa fa-arrow-right mr-2"></i>
+                            العودة لتسجيل الدخول
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Footer Start -->
     <div class="container-fluid footer text-white mt-5 pt-5 px-0 position-relative overlay-top">
@@ -433,27 +567,7 @@
     <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
     <script src="js/main.js"></script>
 
-    <!-- Firebase Auth Scripts - Using v8 consistently -->
-    <!-- Firebase is already loaded at the top of the page -->
-    
-    <!-- Initialize Firebase Auth and Google Provider -->
-    <script>
-        // Initialize Firebase services (using the config from top of page)
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-        const analytics = firebase.analytics();
-        
-        // Initialize Google Auth Provider
-        const googleProvider = new firebase.auth.GoogleAuthProvider();
-        googleProvider.addScope('email');
-        googleProvider.addScope('profile');
-        googleProvider.setCustomParameters({
-            prompt: 'select_account'
-        });
-        
-        console.log('✅ Firebase Auth initialized:', typeof auth);
-        console.log('✅ Google Provider initialized:', typeof googleProvider);
-    </script>
+    <!-- Firebase is already initialized in the head section -->
     
     <!-- Profile Page Variables -->
     <script>
@@ -467,6 +581,12 @@
     <script>
         // Initialize authentication system
         function initializeAuth() {
+            // Check if Firebase Auth is available
+            if (typeof auth === 'undefined') {
+                console.error('❌ Firebase Auth is not initialized');
+                return;
+            }
+            
             // Auth state observer مع تحسينات
             auth.onAuthStateChanged(async (user) => {
                 console.log('Auth state changed:', user ? 'User logged in' : 'User logged out');
@@ -809,10 +929,300 @@
             }
         }
 
+        // Toggle password visibility
+        function togglePassword(inputId) {
+            const passwordInput = document.getElementById(inputId);
+            const toggleButton = passwordInput.nextElementSibling.querySelector('button i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleButton.className = 'fa fa-eye-slash';
+            } else {
+                passwordInput.type = 'password';
+                toggleButton.className = 'fa fa-eye';
+            }
+        }
+
+        // Sign in with Email and Password
+        async function signInWithEmail(event) {
+            event.preventDefault();
+            
+            // Check if Firebase Auth is available
+            if (typeof auth === 'undefined') {
+                console.error('❌ Firebase Auth is not initialized');
+                showAlert('خطأ في النظام: Firebase غير محمل', 'error');
+                return;
+            }
+            
+            try {
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                
+                console.log('🔐 Attempting email sign in for:', email);
+                
+                // Disable form
+                const submitButton = event.target.querySelector('button[type="submit"]');
+                const originalText = submitButton.innerHTML;
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i>جاري تسجيل الدخول...';
+                
+                // Sign in with Firebase
+                const result = await auth.signInWithEmailAndPassword(email, password);
+                const user = result.user;
+                
+                console.log('✅ Email sign in successful:', user.email);
+                
+                // Close modal and reload
+                $('#loginModal').modal('hide');
+                setTimeout(() => {
+                    window.location.reload();
+                }, 500);
+                
+            } catch (error) {
+                console.error('❌ Email sign in error:', error);
+                
+                // Re-enable form
+                const submitButton = event.target.querySelector('button[type="submit"]');
+                submitButton.disabled = false;
+                submitButton.innerHTML = '<i class="fa fa-sign-in-alt mr-2"></i>تسجيل الدخول';
+                
+                // Show error message
+                let errorMessage = 'حدث خطأ في تسجيل الدخول';
+                
+                switch (error.code) {
+                    case 'auth/user-not-found':
+                        errorMessage = 'البريد الإلكتروني غير مسجل. يرجى إنشاء حساب جديد.';
+                        break;
+                    case 'auth/wrong-password':
+                        errorMessage = 'كلمة المرور غير صحيحة';
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = 'البريد الإلكتروني غير صحيح';
+                        break;
+                    case 'auth/user-disabled':
+                        errorMessage = 'تم تعطيل هذا الحساب';
+                        break;
+                    case 'auth/too-many-requests':
+                        errorMessage = 'تم تجاوز عدد المحاولات المسموح. حاول لاحقاً.';
+                        break;
+                }
+                
+                showAlert(errorMessage, 'error');
+            }
+        }
+
+        // Register with Email and Password
+        async function registerWithEmail(event) {
+            event.preventDefault();
+            
+            // Check if Firebase Auth is available
+            if (typeof auth === 'undefined') {
+                console.error('❌ Firebase Auth is not initialized');
+                showAlert('خطأ في النظام: Firebase غير محمل', 'error');
+                return;
+            }
+            
+            try {
+                const name = document.getElementById('registerName').value;
+                const email = document.getElementById('registerEmail').value;
+                const password = document.getElementById('registerPassword').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                
+                // Validate password confirmation
+                if (password !== confirmPassword) {
+                    showAlert('كلمات المرور غير متطابقة', 'error');
+                    return;
+                }
+                
+                console.log('🔐 Attempting email registration for:', email);
+                
+                // Disable form
+                const submitButton = event.target.querySelector('button[type="submit"]');
+                const originalText = submitButton.innerHTML;
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i>جاري إنشاء الحساب...';
+                
+                // Create user with Firebase
+                const result = await auth.createUserWithEmailAndPassword(email, password);
+                const user = result.user;
+                
+                // Update profile with display name
+                await user.updateProfile({
+                    displayName: name
+                });
+                
+                console.log('✅ Email registration successful:', user.email);
+                
+                // Send email verification
+                await user.sendEmailVerification();
+                
+                showAlert('تم إنشاء الحساب بنجاح! تم إرسال رابط التفعيل لبريدك الإلكتروني.', 'success');
+                
+                // Close modal and reload
+                $('#loginModal').modal('hide');
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
+                
+            } catch (error) {
+                console.error('❌ Email registration error:', error);
+                
+                // Re-enable form
+                const submitButton = event.target.querySelector('button[type="submit"]');
+                submitButton.disabled = false;
+                submitButton.innerHTML = '<i class="fa fa-user-plus mr-2"></i>إنشاء حساب جديد';
+                
+                // Show error message
+                let errorMessage = 'حدث خطأ في إنشاء الحساب';
+                
+                switch (error.code) {
+                    case 'auth/email-already-in-use':
+                        errorMessage = 'البريد الإلكتروني مستخدم مسبقاً. جرب تسجيل الدخول بدلاً من ذلك.';
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = 'البريد الإلكتروني غير صحيح';
+                        break;
+                    case 'auth/weak-password':
+                        errorMessage = 'كلمة المرور ضعيفة. يجب أن تكون 6 أحرف على الأقل';
+                        break;
+                    case 'auth/operation-not-allowed':
+                        errorMessage = 'تسجيل الحسابات الجديدة معطل حالياً';
+                        break;
+                }
+                
+                showAlert(errorMessage, 'error');
+            }
+        }
+
+        // Send Password Reset Email
+        async function sendPasswordReset(event) {
+            event.preventDefault();
+            
+            // Check if Firebase Auth is available
+            if (typeof auth === 'undefined') {
+                console.error('❌ Firebase Auth is not initialized');
+                showAlert('خطأ في النظام: Firebase غير محمل', 'error');
+                return;
+            }
+            
+            try {
+                const email = document.getElementById('resetEmail').value;
+                
+                console.log('🔑 Sending password reset for:', email);
+                
+                // Disable form
+                const submitButton = event.target.querySelector('button[type="submit"]');
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i>جاري الإرسال...';
+                
+                // Send password reset email
+                await auth.sendPasswordResetEmail(email);
+                
+                console.log('✅ Password reset email sent');
+                
+                showAlert('تم إرسال رابط إعادة تعيين كلمة المرور لبريدك الإلكتروني', 'success');
+                
+                // Close modal
+                $('#forgotPasswordModal').modal('hide');
+                
+            } catch (error) {
+                console.error('❌ Password reset error:', error);
+                
+                // Re-enable form
+                const submitButton = event.target.querySelector('button[type="submit"]');
+                submitButton.disabled = false;
+                submitButton.innerHTML = '<i class="fa fa-paper-plane mr-2"></i>إرسال رابط إعادة التعيين';
+                
+                // Show error message
+                let errorMessage = 'حدث خطأ في إرسال رابط إعادة التعيين';
+                
+                switch (error.code) {
+                    case 'auth/user-not-found':
+                        errorMessage = 'البريد الإلكتروني غير مسجل';
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = 'البريد الإلكتروني غير صحيح';
+                        break;
+                    case 'auth/too-many-requests':
+                        errorMessage = 'تم تجاوز عدد المحاولات المسموح. حاول لاحقاً.';
+                        break;
+                }
+                
+                showAlert(errorMessage, 'error');
+            }
+        }
+
+        // Show Forgot Password Modal
+        function showForgotPassword() {
+            $('#loginModal').modal('hide');
+            setTimeout(() => {
+                $('#forgotPasswordModal').modal('show');
+            }, 300);
+        }
+
+        // Back to Login Modal
+        function backToLogin() {
+            $('#forgotPasswordModal').modal('hide');
+            setTimeout(() => {
+                $('#loginModal').modal('show');
+            }, 300);
+        }
+
+        // Show Alert Function
+        function showAlert(message, type = 'info') {
+            const alertTypes = {
+                success: { class: 'alert-success', icon: 'fa-check-circle' },
+                error: { class: 'alert-danger', icon: 'fa-exclamation-circle' },
+                warning: { class: 'alert-warning', icon: 'fa-exclamation-triangle' },
+                info: { class: 'alert-info', icon: 'fa-info-circle' }
+            };
+            
+            const alertConfig = alertTypes[type] || alertTypes.info;
+            
+            const alertHtml = `
+                <div class="alert ${alertConfig.class} alert-dismissible fade show position-fixed" 
+                     style="top: 20px; right: 20px; z-index: 10000; min-width: 300px; max-width: 500px;">
+                    <i class="fas ${alertConfig.icon} mr-2"></i>
+                    ${message}
+                    <button type="button" class="close" data-dismiss="alert">
+                        <span>&times;</span>
+                    </button>
+                </div>
+            `;
+            
+            // Remove existing alerts
+            document.querySelectorAll('.alert.position-fixed').forEach(alert => alert.remove());
+            
+            // Add new alert
+            document.body.insertAdjacentHTML('beforeend', alertHtml);
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                const alert = document.querySelector('.alert.position-fixed');
+                if (alert) {
+                    alert.remove();
+                }
+            }, 5000);
+        }
+
         // Sign in with Google
         async function signInWithGoogle(event) {
             try {
                 console.log('🚀 Attempting Google sign in...');
+                
+                // Check if Firebase Auth is available
+                if (typeof auth === 'undefined') {
+                    console.error('❌ Firebase Auth is not initialized');
+                    showAlert('خطأ في النظام: Firebase غير محمل', 'error');
+                    return;
+                }
+                
+                if (typeof googleProvider === 'undefined') {
+                    console.error('❌ Google Provider is not initialized');
+                    showAlert('خطأ في النظام: Google Provider غير محمل', 'error');
+                    return;
+                }
+                
                 console.log('🔍 Firebase auth object:', typeof auth);
                 console.log('🔍 Google provider object:', typeof googleProvider);
                 
@@ -1633,16 +2043,28 @@
             console.log("📱 Device type:", detectDeviceType());
             console.log("🌐 User Agent:", navigator.userAgent);
             
-            loadSettings();
-            initializeAuth(); // Start the authentication system
+            // Wait for Firebase to be ready
+            const initializeWhenReady = () => {
+                if (typeof firebase !== 'undefined' && typeof auth !== 'undefined') {
+                    console.log("✅ Firebase is ready, initializing...");
+                    
+                    loadSettings();
+                    initializeAuth(); // Start the authentication system
+                    
+                    // إضافة معلومات debug إضافية
+                    console.log("🔍 Firebase Config:", {
+                        projectId: firebase.app().options.projectId,
+                        authDomain: firebase.app().options.authDomain
+                    });
+                    
+                    console.log("✅ Profile page initialized");
+                } else {
+                    console.log("⏳ Waiting for Firebase to load...");
+                    setTimeout(initializeWhenReady, 100);
+                }
+            };
             
-            // إضافة معلومات debug إضافية
-            console.log("🔍 Firebase Config:", {
-                projectId: firebase.app().options.projectId,
-                authDomain: firebase.app().options.authDomain
-            });
-            
-            console.log("✅ Profile page initialized");
+            initializeWhenReady();
         });
 
 
@@ -1693,8 +2115,20 @@
         });
     </script>
     
+    <!-- Profile Auth System -->
+    <script src="js/profile-auth.js"></script>
+    
     <!-- Points Manager -->
     <script src="js/points-manager.js"></script>
+    
+    <!-- Admin Integration -->
+    <script src="js/admin-integration.js"></script>
+    
+    <!-- Notifications Manager -->
+    <script src="js/notifications-manager.js"></script>
+    
+    <!-- Firebase MySQL Sync -->
+    <script src="js/firebase-mysql-sync.js"></script>
 </body>
 
 </html>
