@@ -1,147 +1,299 @@
 /**
- * Profile Authentication Integration
- * ربط صفحة الملف الشخصي مع Auth Manager
+ * نظام المصادقة المحدث للملف الشخصي
+ * يدعم تسجيل الدخول بالإيميل + Google + Twitter
  */
 
-document.addEventListener('DOMContentLoaded', function() {
-    // تحديث Firebase Auth لاستخدام Auth Manager
-    if (typeof firebase !== 'undefined' && firebase.auth) {
-        // Override Firebase auth state change
-        firebase.auth().onAuthStateChanged(async (firebaseUser) => {
-            if (firebaseUser) {
-                console.log('🔥 Firebase user authenticated:', firebaseUser.email);
-                
-                // Send to backend for JWT token
-                try {
-                    const response = await fetch('/api/auth/firebase', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            uid: firebaseUser.uid,
-                            email: firebaseUser.email,
-                            displayName: firebaseUser.displayName,
-                            photoURL: firebaseUser.photoURL,
-                            provider: firebaseUser.providerData[0]?.providerId || 'google.com'
-                        })
-                    });
+class ProfileAuth {
+    constructor() {
+        this.currentUser = null;
+        this.initializeAuth();
+    }
 
-                    if (response.ok) {
-                        const data = await response.json();
-                        
-                        // Use Auth Manager to handle the login
-                        authManager.login({
-                            token: data.data.token,
-                            user: data.data.user,
-                            expiresAt: data.data.expiresAt
-                        });
-                        
-                        console.log('✅ JWT token received and stored');
-                        
-                        // Update UI
-                        updateProfileUI(data.data.user);
-                        
-                    } else {
-                        console.error('❌ Failed to get JWT token');
-                        throw new Error('Backend authentication failed');
-                    }
+    /**
+     * تهيئة نظام المصادقة
+     */
+    initializeAuth() {
+        // Auth state observer
+        auth.onAuthStateChanged(async (user) => {
+            console.log('🔐 Auth state changed:', user ? 'User logged in' : 'User logged out');
+            
+            this.currentUser = user;
+            if (user) {
+                console.log('👤 User signed in:', user.displayName || user.email);
+                
+                // تحديث فوري للـ UI
+                this.updateUI(true);
+                
+                try {
+                    // إرسال البيانات للخلفية والتكامل مع لوحة الأدمن
+                    await this.syncWithBackend(user);
+                    
+                    // تحميل بيانات المستخدم
+                    await this.loadUserData(user);
+                    
                 } catch (error) {
-                    console.error('❌ Error during authentication:', error);
-                    authManager.showErrorMessage('فشل في تسجيل الدخول');
+                    console.error('❌ Error in background auth operations:', error);
                 }
+                
             } else {
-                console.log('🔥 Firebase user signed out');
-                authManager.logout('firebase-logout');
+                console.log('🚪 User signed out');
+                this.updateUI(false);
             }
         });
     }
 
-    // Listen for auth events from Auth Manager
-    document.addEventListener('auth:login', (event) => {
-        const { user } = event.detail;
-        console.log('🔐 Auth Manager login event:', user.email);
-        updateProfileUI(user);
-    });
+    /**
+     * مزامنة مع الخلفية ولوحة الأدمن
+     */
+    async syncWithBackend(user) {
+        try {
+            // إرسال بيانات المستخدم للخلفية (Node.js)
+            const authData = {
+                uid: user.uid,
+                email: user.email,
+                displayName: user.displayName || user.email.split('@')[0],
+                photoURL: user.photoURL,
+                provider: this.getProviderName(user),
+                isEmailVerified: user.emailVerified
+            };
 
-    document.addEventListener('auth:logout', (event) => {
-        const { reason } = event.detail;
-        console.log('🔐 Auth Manager logout event:', reason);
-        clearProfileUI();
+            // مزامنة مع النظام الخلفي
+            const response = await fetch('/api/auth/firebase', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(authData)
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                console.log('✅ Backend sync successful:', result.message);
+                
+                // حفظ التوكن إذا كان متوفراً
+                if (result.data && result.data.token) {
+                    if (window.authManager) {
+                        window.authManager.login(result.data);
+                    }
+                }
+            }
+
+            // مزامنة مع لوحة الأدمن
+            if (window.adminIntegration) {
+                await window.adminIntegration.syncUserWithAdmin(authData, 'login');
+            }
+
+        } catch (error) {
+            console.error('❌ Backend sync error:', error);
+        }
+    }
+
+    /**
+     * تحديث واجهة المستخدم
+     */
+    updateUI(isSignedIn) {
+        const loginAlert = document.getElementById('loginAlert');
+        const profileContent = document.getElementById('profileContent');
         
-        // Sign out from Firebase too
-        if (typeof firebase !== 'undefined' && firebase.auth) {
-            firebase.auth().signOut().catch(console.error);
+        if (loginAlert && profileContent) {
+            if (isSignedIn) {
+                loginAlert.style.display = 'none';
+                profileContent.style.display = 'block';
+                
+                // تحديث عرض النقاط
+                if (window.pointsManager) {
+                    window.pointsManager.updateAllDisplays();
+                }
+            } else {
+                loginAlert.style.display = 'block';
+                profileContent.style.display = 'none';
+                
+                // إعادة تعيين الصور
+                this.resetAvatars();
+            }
         }
-    });
-
-    // Check if already logged in on page load
-    if (authManager.isLoggedIn()) {
-        const user = authManager.getCurrentUser();
-        updateProfileUI(user);
     }
-});
 
-/**
- * تحديث واجهة الملف الشخصي
- */
-function updateProfileUI(user) {
-    // Update profile info
-    const profileElements = {
-        'userDisplayName': user.displayName || user.email,
-        'userEmail': user.email,
-        'userPoints': user.points || 0,
-        'userRole': user.role === 'admin' ? 'مدير' : 'مستخدم',
-        'userUID': user.uid
+    /**
+     * إعادة تعيين الصور الشخصية
+     */
+    resetAvatars() {
+        const avatarElement = document.getElementById('userAvatar');
+        const defaultAvatar = document.getElementById('defaultAvatar');
+        
+        if (avatarElement && defaultAvatar) {
+            avatarElement.style.display = 'none';
+            avatarElement.src = '';
+            defaultAvatar.style.display = 'flex';
+        }
+    }
+
+    /**
+     * تحميل بيانات المستخدم
+     */
+    async loadUserData(user) {
+        try {
+            // تحديث عناصر الواجهة
+            this.updateUserElements(user);
+            
+            // تحميل بيانات إضافية من Firestore إذا كان متاحاً
+            if (typeof db !== 'undefined') {
+                const userDoc = await db.collection("users").doc(user.uid).get();
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    this.updateUserElements(userData);
+                }
+            }
+            
+        } catch (error) {
+            console.error('❌ Error loading user data:', error);
+        }
+    }
+
+    /**
+     * تحديث عناصر واجهة المستخدم بالبيانات
+     */
+    updateUserElements(userData) {
+        const elements = [
+            { id: 'userFullName', value: userData.displayName || 'غير محدد' },
+            { id: 'userEmail', value: userData.email || 'غير محدد' },
+            { id: 'userProvider', value: this.getProviderDisplayName(userData.provider || userData.providerId) },
+            { id: 'userLastLogin', value: this.formatDate(userData.lastLoginAt || userData.metadata?.lastSignInTime) },
+            { id: 'userMemberSince', value: this.formatDate(userData.createdAt || userData.metadata?.creationTime) }
+        ];
+        
+        elements.forEach(element => {
+            const el = document.getElementById(element.id);
+            if (el) {
+                el.textContent = element.value;
+            }
+        });
+        
+        // تحديث الصورة الشخصية
+        this.updateAvatar(userData.photoURL);
+    }
+
+    /**
+     * تحديث الصورة الشخصية
+     */
+    updateAvatar(photoURL) {
+        const avatarElement = document.getElementById('userAvatar');
+        const defaultAvatar = document.getElementById('defaultAvatar');
+        
+        if (avatarElement && defaultAvatar) {
+            if (photoURL) {
+                avatarElement.src = photoURL;
+                avatarElement.style.display = 'block';
+                defaultAvatar.style.display = 'none';
+            } else {
+                avatarElement.style.display = 'none';
+                defaultAvatar.style.display = 'flex';
+            }
+        }
+    }
+
+    /**
+     * الحصول على اسم مقدم الخدمة
+     */
+    getProviderName(user) {
+        if (user.providerData && user.providerData.length > 0) {
+            return user.providerData[0].providerId;
+        }
+        return 'email';
+    }
+
+    /**
+     * الحصول على اسم مقدم الخدمة للعرض
+     */
+    getProviderDisplayName(providerId) {
+        switch (providerId) {
+            case 'google.com': return 'Google';
+            case 'twitter.com': return 'Twitter';
+            case 'password': return 'البريد الإلكتروني';
+            case 'email': return 'البريد الإلكتروني';
+            default: return 'غير معروف';
+        }
+    }
+
+    /**
+     * تنسيق التاريخ
+     */
+    formatDate(timestamp) {
+        if (!timestamp) return 'غير محدد';
+        
+        let date;
+        if (timestamp.seconds) {
+            // Firestore Timestamp
+            date = new Date(timestamp.seconds * 1000);
+        } else if (typeof timestamp === 'string') {
+            date = new Date(timestamp);
+        } else {
+            date = timestamp;
+        }
+        
+        return date.toLocaleDateString('ar-SA', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    }
+
+    /**
+     * تسجيل الخروج
+     */
+    async logout() {
+        try {
+            await auth.signOut();
+            
+            // مسح البيانات المحلية
+            if (window.authManager) {
+                window.authManager.logout('manual');
+            }
+            
+            if (window.pointsManager) {
+                window.pointsManager.resetPoints();
+            }
+            
+            console.log('✅ Logout successful');
+            
+        } catch (error) {
+            console.error('❌ Logout error:', error);
+        }
+    }
+
+    /**
+     * الحصول على المستخدم الحالي
+     */
+    getCurrentUser() {
+        return this.currentUser;
+    }
+
+    /**
+     * فحص حالة تسجيل الدخول
+     */
+    isLoggedIn() {
+        return !!this.currentUser;
+    }
+}
+
+// تصدير للاستخدام العام
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = ProfileAuth;
+}
+
+// تهيئة عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', () => {
+    // انتظار تحميل Firebase
+    const initProfileAuth = () => {
+        if (typeof firebase !== 'undefined' && typeof auth !== 'undefined') {
+            window.profileAuth = new ProfileAuth();
+            console.log('🔐 Profile Auth initialized');
+        } else {
+            setTimeout(initProfileAuth, 100);
+        }
     };
-
-    Object.entries(profileElements).forEach(([id, value]) => {
-        const element = document.getElementById(id);
-        if (element) {
-            element.textContent = value;
-        }
-    });
-
-    // Update profile picture
-    const profileImg = document.getElementById('userProfileImage');
-    if (profileImg && user.photoURL) {
-        profileImg.src = user.photoURL;
-    }
-
-    // Show logged in state
-    const loginSection = document.getElementById('loginSection');
-    const profileSection = document.getElementById('profileSection');
     
-    if (loginSection) loginSection.style.display = 'none';
-    if (profileSection) profileSection.style.display = 'block';
-    
-    console.log('✅ Profile UI updated for:', user.email);
-}
-
-/**
- * مسح واجهة الملف الشخصي
- */
-function clearProfileUI() {
-    // Show login section
-    const loginSection = document.getElementById('loginSection');
-    const profileSection = document.getElementById('profileSection');
-    
-    if (loginSection) loginSection.style.display = 'block';
-    if (profileSection) profileSection.style.display = 'none';
-    
-    console.log('🧹 Profile UI cleared');
-}
-
-/**
- * تسجيل الخروج اليدوي
- */
-function manualLogout() {
-    authManager.logout('manual');
-}
-
-// Make functions globally available
-window.updateProfileUI = updateProfileUI;
-window.clearProfileUI = clearProfileUI;
-window.manualLogout = manualLogout;
-
-console.log('👤 Profile authentication integration loaded');
+    initProfileAuth();
+});
